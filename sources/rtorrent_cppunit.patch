@@ -1,0 +1,17 @@
+--- configure.ac
++++ configure.ac
+@@ -4,7 +4,13 @@
+
+ AM_INIT_AUTOMAKE
+ AC_CONFIG_HEADERS(config.h)
+-AM_PATH_CPPUNIT(1.9.6)
++
++# Check availability of cppunit
++PKG_CHECK_MODULES([CPPUNIT], [cppunit >= 1.9.6],
++                  [have_cppunit=yes], [have_cppunit=no])
++if test "x$have_cppunit" != "xyes"; then
++  AC_MSG_WARN([$CPPUNIT_PKG_ERRORS])
++fi
+
+ AC_PROG_CXX
+ AC_PROG_LIBTOOL

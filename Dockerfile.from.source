@@ -1,0 +1,136 @@
+FROM repo.cylo.io/alpine-lep
+
+ENV RUTORRENT_VERSION 3.8
+ARG MEDIAINF_VER="0.7.92.1"
+ARG RTORRENT_VER="0.9.6"
+ARG LIBTORRENT_VER="0.13.6"
+ARG CURL_VER="7.50.0"
+
+RUN apk update && \
+    apk add --no-cache \
+    mediainfo \
+    unrar \
+    unzip \
+    gzip \
+    tar \
+    geoip-dev \
+    wget \
+    irssi \
+    irssi-perl \
+    sox \
+    zip \
+    bzip2 \
+    ffmpeg \
+    findutils \
+    perl-xml-libxml \
+    perl-json \
+    perl-archive-zip \
+    perl-html-parser \
+    perl-net-ssleay \
+    ca-certificates
+
+RUN docker-php-ext-install xml sockets
+
+RUN apk add --no-cache --virtual .build-deps \
+    build-base \
+    libtool \
+    automake \
+    autoconf \
+    wget \
+    ncurses-dev \
+    curl-dev \
+    cppunit-dev
+
+RUN cd /tmp && \
+    mkdir curl && \
+    cd curl && \
+    wget -qO- https://curl.haxx.se/download/curl-${CURL_VER}.tar.gz | tar xz --strip 1 && \
+    ./configure --with-ssl && make -j ${NB_CORES} && make install && \
+    ldconfig /usr/bin && ldconfig /usr/
+
+ADD sources/libtorrent_cppunit.patch /tmp/libtorrent_cppunit.patch
+ADD sources/rtorrent_cppunit.patch /tmp/rtorrent_cppunit.patch
+
+#RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
+#    cd /tmp && \
+#    mkdir xmlrpc-c && \
+#    cd /tmp/xmlrpc-c && \
+#    wget -qO- https://sourceforge.net/projects/xmlrpc-c/files/latest/download?source=files | tar xz --strip 1 && \
+#    ./configure --with-libwww-ssl --disable-wininet-client --disable-curl-client --disable-libwww-client --disable-abyss-server --disable-cgi-server && make -j ${NB_CORES} && make install && \
+#    # compile libtorrent
+#    cd /tmp && \
+#    mkdir libtorrent && \
+#    cd libtorrent && \
+#    wget -qO- https://github.com/rakshasa/libtorrent/archive/${LIBTORRENT_VER}.tar.gz | tar xz --strip 1 && \
+#    patch -p0 < /tmp/libtorrent_cppunit.patch && \
+#    ./autogen.sh && ./configure && make -j ${NB_CORES} && make install && \
+#    # compile rtorrent
+#    cd /tmp && \
+#    mkdir rtorrent && \
+#    cd rtorrent && \
+#    wget -qO- https://github.com/rakshasa/rtorrent/archive/${RTORRENT_VER}.tar.gz | tar xz --strip 1 && \
+#    patch -p0 < /tmp/rtorrent_cppunit.patch && \
+#    ./autogen.sh && ./configure --with-xmlrpc-c && make -j ${NB_CORES} && make install
+#    # compile mediainfo packages
+#    curl -o \
+#    /tmp/libmediainfo.tar.gz -L \
+#    "http://mediaarea.net/download/binary/libmediainfo0/${MEDIAINF_VER}/MediaInfo_DLL_${MEDIAINF_VER}_GNU_FromSource.tar.gz" && \
+#    curl -o \
+#    /tmp/mediainfo.tar.gz -L \
+#    "http://mediaarea.net/download/binary/mediainfo/${MEDIAINF_VER}/MediaInfo_CLI_${MEDIAINF_VER}_GNU_FromSource.tar.gz" && \
+#    mkdir -p \
+#    /tmp/libmediainfo \
+#    /tmp/mediainfo && \
+#    tar xf /tmp/libmediainfo.tar.gz -C \
+#    /tmp/libmediainfo --strip-components=1 && \
+#    tar xf /tmp/mediainfo.tar.gz -C \
+#    /tmp/mediainfo --strip-components=1 && \
+#    cd /tmp/libmediainfo && \
+#    ./SO_Compile.sh && \
+#    cd /tmp/libmediainfo/ZenLib/Project/GNU/Library && \
+#    make install && \
+#    cd /tmp/libmediainfo/MediaInfoLib/Project/GNU/Library && \
+#    make install && \
+#    cd /tmp/mediainfo && \
+#    ./CLI_Compile.sh && \
+#    cd /tmp/mediainfo/MediaInfo/Project/GNU/CLI && \
+#    make install
+
+RUN pecl install geoip-1.1.1
+RUN echo "extension=geoip.so" > /usr/local/etc/php/conf.d/cylo-geoip.ini
+RUN git clone https://github.com/mcrapet/plowshare
+RUN cd plowshare && make install
+RUN plowmod --install
+RUN cd && rm -rf plowshare
+
+RUN rm -rf /tmp/*
+
+RUN curl -fSL https://github.com/Novik/ruTorrent/archive/v$RUTORRENT_VERSION.tar.gz -o rutorrent.tar.gz && \
+    tar xzf rutorrent.tar.gz && \
+    mv ruTorrent-$RUTORRENT_VERSION/* /var/www/html/ && \
+    rm -rf rutorrent.tar.gz && \
+    git clone https://github.com/nelu/rutorrent-thirdparty-plugins.git /tmp/plugins && \
+    mv /tmp/plugins/filemanager  /var/www/html/plugins/ && \
+    mv /tmp/plugins/fileshare /var/www/html/plugins/ && \
+    mv /tmp/plugins/fileupload /var/www/html/plugins/ && \
+    rm -rf /tmp/plugins && \
+    chmod 755 /var/www/html/plugins/filemanager/scripts/* && \
+    mkdir -p /var/www/html/no-auth && \
+    ln -s /var/www/html/plugins/fileshare/share.php /var/www/html/no-auth/share.php && \
+    rm -rf /var/www/html/plugins/check_port
+
+RUN cd /var/www/html/plugins/ \
+      && git clone https://github.com/xombiemp/rutorrentMobile.git mobile \
+      && cd /var/www/html/plugins/theme/themes \
+      git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
+
+ADD sources/config.php /var/www/html/conf/config.php
+ADD sources/.rtorrent.rc /var/cache/nginx/.rtorrent.rc
+ADD sources/filemanager.conf /var/www/html/plugins/filemanager/conf.php
+ADD sources/nginx-site.conf /etc/nginx/sites-available/default.conf
+ADD scripts/entrypoint.sh /scripts/entrypoint.sh
+RUN chmod -R +x /scripts
+RUN apk del .build-deps
+
+ENTRYPOINT [ "/scripts/entrypoint.sh" ]
+CMD [ "/start.sh" ]
