@@ -1,6 +1,6 @@
 FROM repo.cylo.io/alpine-lep
 
-ENV RUTORRENT_VERSION 3.8
+ENV RUTORRENT_VERSION master
 
 RUN apk update && \
     apk add --no-cache \
@@ -51,7 +51,7 @@ RUN curl -fSL http://www.rarlab.com/rar/rarlinux-5.3.0.tar.gz -o rar.tar.gz && \
     ln -s /usr/bin/rar /usr/bin/unrar && \
     rm -rf rar*
 
-RUN curl -fSL https://github.com/Novik/ruTorrent/archive/v$RUTORRENT_VERSION.tar.gz -o rutorrent.tar.gz && \
+RUN curl -fSL https://github.com/Novik/ruTorrent/archive/$RUTORRENT_VERSION.tar.gz -o rutorrent.tar.gz && \
     tar xzf rutorrent.tar.gz && \
     mv ruTorrent-$RUTORRENT_VERSION/* /var/www/html/ && \
     rm -rf ruTorrent-$RUTORRENT_VERSION && \
@@ -70,8 +70,17 @@ RUN cd /var/www/html/plugins/ && \
     cd /var/www/html/plugins/theme/themes  && \
     git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
 
+RUN	mkdir -p /var/cache/nginx/.irssi/scripts/autorun && \
+    cd /var/cache/nginx/.irssi/scripts && \
+	curl -sL http://git.io/vlcND | grep -Po '(?<="browser_download_url": ")(.*-v[\d.]+.zip)' | xargs wget --quiet -O autodl-irssi.zip && \
+	unzip -o autodl-irssi.zip && \
+	rm autodl-irssi.zip && \
+	cp autodl-irssi.pl autorun/ && \
+    echo "load perl" > /var/cache/nginx/.irssi/startup
+
+RUN mkdir -p /sources
 ADD sources/config.php /var/www/html/conf/config.php
-ADD sources/.rtorrent.rc /var/cache/nginx/.rtorrent.rc
+ADD sources/.rtorrent.rc /sources/.rtorrent.rc
 ADD sources/filemanager.conf /var/www/html/plugins/filemanager/conf.php
 ADD sources/nginx-site.conf /etc/nginx/sites-available/default.conf
 ADD scripts/entrypoint.sh /scripts/entrypoint.sh
