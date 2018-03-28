@@ -25,7 +25,8 @@ RUN apk update && \
     perl-net-ssleay \
     ca-certificates \
     coreutils \
-    file
+    file \
+    cksfv
 
 RUN docker-php-ext-install xml sockets
 
@@ -63,12 +64,16 @@ RUN curl -fSL https://github.com/Novik/ruTorrent/archive/$RUTORRENT_VERSION.tar.
     rm -rf /tmp/plugins && \
     chmod 755 /var/www/html/plugins/filemanager/scripts/* && \
     mkdir -p /var/www/html/no-auth && \
-    ln -s /var/www/html/plugins/fileshare/share.php /var/www/html/no-auth/share.php
+    ln -s /var/www/html/plugins/fileshare/share.php /var/www/html/no-auth/share.php && \
+    sed -i /getConfFile/d /var/www/html/plugins/fileshare/share.php
 
 RUN cd /var/www/html/plugins/ && \
-    git clone https://github.com/xombiemp/rutorrentMobile.git mobile && \
     cd /var/www/html/plugins/theme/themes  && \
-    git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
+    git clone https://github.com/ArtyumX/ruTorrent-Themes && \
+    mv ruTorrent-Themes/* . && \
+    rm -rf ruTorrent-Themes && \
+    rm -rf ./*.png && \
+    rm -rf ./*.md
 
 RUN	mkdir -p /var/cache/nginx/.irssi/scripts/autorun && \
     cd /var/cache/nginx/.irssi/scripts && \
@@ -77,6 +82,20 @@ RUN	mkdir -p /var/cache/nginx/.irssi/scripts/autorun && \
 	rm autodl-irssi.zip && \
 	cp autodl-irssi.pl autorun/ && \
     echo "load perl" > /var/cache/nginx/.irssi/startup
+
+RUN cd /var/www/html/plugins/ && \
+    git clone https://github.com/Gyran/rutorrent-pausewebui pausewebui && \
+    git clone https://github.com/Gyran/rutorrent-ratiocolor ratiocolor && \
+    sed -i 's/changeWhat = "cell-background";/changeWhat = "font";/g' ratiocolor/init.js && \
+    git clone https://github.com/Gyran/rutorrent-instantsearch instantsearch && \
+    git clone https://github.com/Korni22/rutorrent-logoff logoff && \
+    git clone https://github.com/xombiemp/rutorrentMobile && \
+    git clone https://github.com/dioltas/AddZip && \
+    git clone https://github.com/orobardet/rutorrent-force_save_session force_save_session && \
+    git clone https://github.com/AceP1983/ruTorrent-plugins && \
+    mv ruTorrent-plugins/* . && \
+    rm -rf ruTorrent-plugins && \
+    git clone https://github.com/radonthetyrant/rutorrent-discord.git
 
 RUN mkdir -p /sources
 ADD sources/config.php /var/www/html/conf/config.php

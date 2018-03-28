@@ -114,7 +114,6 @@ if [ ! -f /etc/app_configured ]; then
     sed -i 's#LISTENING_PORT#'${LISTENING_PORT}'#g' /torrents/config/rtorrent/.rtorrent.rc
     sed -i 's#DHT_PORT#'${DHT_PORT}'#g' /torrents/config/rtorrent/.rtorrent.rc
     sed -i 's#http://mydomain.com#'${EXTERNAL_DOMAIN}'/no-auth#g' /var/www/html/plugins/fileshare/conf.php
-    sed -i /getConfFile/d /var/www/html/plugins/fileshare/share.php
 fi
 
 rm -f /torrents/config/rtorrent/session/rtorrent.lock
