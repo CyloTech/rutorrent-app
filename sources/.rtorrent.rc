@@ -62,7 +62,7 @@ schedule2 = watch_directory,5,5,load_start=/torrents/watch/*.torrent
 #network.bind_address.set = rakshasa.no
 
 # Port range to use for listening.
-network.port_range.set = 49161-49161
+network.port_range.set = LISTENING_PORT-LISTENING_PORT
 
 # Start opening ports at a random position within the port range.
 network.port_random.set = yes
@@ -98,7 +98,7 @@ dht.mode.set = auto
 
 # UDP port to use for DHT. 
 # 
-dht.port.set=49160
+dht.port.set=DHT_PORT
 
 # Enable peer exchange (for torrents not marked private)
 #

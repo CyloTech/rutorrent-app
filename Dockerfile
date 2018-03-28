@@ -63,13 +63,12 @@ RUN curl -fSL https://github.com/Novik/ruTorrent/archive/v$RUTORRENT_VERSION.tar
     rm -rf /tmp/plugins && \
     chmod 755 /var/www/html/plugins/filemanager/scripts/* && \
     mkdir -p /var/www/html/no-auth && \
-    ln -s /var/www/html/plugins/fileshare/share.php /var/www/html/no-auth/share.php && \
-    rm -rf /var/www/html/plugins/check_port
-#RUN sed -i 's/--mode=0777/-m 0777/g' /var/www/html/plugins/filemanager/scripts/extract
+    ln -s /var/www/html/plugins/fileshare/share.php /var/www/html/no-auth/share.php
+
 RUN cd /var/www/html/plugins/ && \
-      git clone https://github.com/xombiemp/rutorrentMobile.git mobile && \
-      cd /var/www/html/plugins/theme/themes  && \
-      git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
+    git clone https://github.com/xombiemp/rutorrentMobile.git mobile && \
+    cd /var/www/html/plugins/theme/themes  && \
+    git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
 
 ADD sources/config.php /var/www/html/conf/config.php
 ADD sources/.rtorrent.rc /var/cache/nginx/.rtorrent.rc
