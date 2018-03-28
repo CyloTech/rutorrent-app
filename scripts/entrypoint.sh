@@ -2,7 +2,8 @@
 set -x
 ###########################[ SUPERVISOR SCRIPTS ]###############################
 
-mkdir -p /etc/supervisor/conf.d
+if [ ! -f /etc/app_configured ]; then
+    mkdir -p /etc/supervisor/conf.d
 cat << EOF >> /etc/supervisor/conf.d/initplugins.conf
 [program:initplugins]
 command=/usr/local/bin/php /var/www/html/php/initplugins.php
@@ -44,6 +45,7 @@ stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 EOF
+fi
 
 ###########################[ IRSSI SETUP ]###############################
 # Set up .autodl dir, and allow for configs to be saved.
