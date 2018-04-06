@@ -2,10 +2,16 @@ FROM repo.cylo.io/alpine-lep
 
 ENV RUTORRENT_VERSION master
 
-RUN apk update && \
+ARG RTORRENT_VERSION=0.9.6
+ARG LIBTORRENT_VERSION=0.13.6
+ARG XMLRPC_VERSION=01.51.00
+ARG LIBSIG_VERSION=2.10.0
+ARG CARES_VERSION=1.13.0
+ARG CURL_VERSION=7.55.1
+
+RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && apk update && \
     apk add --no-cache \
     mediainfo \
-    rtorrent \
     unzip \
     gzip \
     tar \
@@ -36,8 +42,12 @@ RUN apk add --no-cache --virtual .build-deps \
     automake \
     autoconf \
     wget \
+    binutils \
+    cppunit-dev \
+    libressl-dev \
     ncurses-dev \
-    curl-dev
+    zlib-dev \
+    xz
 
 RUN pecl install geoip-1.1.1
 RUN echo "extension=geoip.so" > /usr/local/etc/php/conf.d/cylo-geoip.ini
@@ -45,6 +55,23 @@ RUN git clone https://github.com/mcrapet/plowshare
 RUN cd plowshare && make install
 RUN plowmod --install
 RUN cd && rm -rf plowshare
+RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main -U cppunit-dev==1.13.2-r1 cppunit==1.13.2-r1
+RUN cd /tmp && \
+    git clone https://github.com/mirror/xmlrpc-c.git && \
+    cd xmlrpc-c/stable && ./configure && make -j ${NB_CORES} && make install && \
+    cd /tmp && wget http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.10/libsigc++-${LIBSIG_VERSION}.tar.xz && \
+    unxz libsigc++-${LIBSIG_VERSION}.tar.xz && tar -xf libsigc++-${LIBSIG_VERSION}.tar && \
+    cd libsigc++-${LIBSIG_VERSION} && ./configure && make -j ${NB_CORES} && make install && \
+    cd /tmp && wget https://c-ares.haxx.se/download/c-ares-${CARES_VERSION}.tar.gz && \
+    tar zxf c-ares-${CARES_VERSION}.tar.gz && \
+    cd c-ares-${CARES_VERSION} && ./configure && make -j ${NB_CORES} && make install && \
+    cd /tmp && wget https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz && \
+    tar zxf curl-${CURL_VERSION}.tar.gz && \
+    cd curl-${CURL_VERSION}  && ./configure --enable-ares --enable-tls-srp --enable-gnu-tls --with-ssl --with-zlib && make && make install && \
+    cd /tmp && git clone https://github.com/rakshasa/libtorrent.git && cd libtorrent && git checkout tags/${LIBTORRENT_VERSION} && \
+    ./autogen.sh && ./configure --with-posix-fallocate && make -j ${NB_CORES} && make install && \
+    cd /tmp && git clone https://github.com/rakshasa/rtorrent.git && cd rtorrent && git checkout tags/${RTORRENT_VERSION} && \
+    ./autogen.sh && ./configure --with-xmlrpc-c --with-ncurses && make -j ${NB_CORES} && make install
 
 RUN curl -fSL http://www.rarlab.com/rar/rarlinux-5.3.0.tar.gz -o rar.tar.gz && \
     tar -xzvf rar.tar.gz && \
@@ -104,7 +131,8 @@ ADD sources/filemanager.conf /var/www/html/plugins/filemanager/conf.php
 ADD sources/nginx-site.conf /etc/nginx/sites-available/default.conf
 ADD scripts/entrypoint.sh /scripts/entrypoint.sh
 RUN chmod -R +x /scripts
-RUN apk del .build-deps
+RUN apk del .build-deps  && rm -rf /tmp/* && \
+    rm -rf /var/cache/apk/*
 
 ENTRYPOINT [ "/scripts/entrypoint.sh" ]
 CMD [ "/start.sh" ]
