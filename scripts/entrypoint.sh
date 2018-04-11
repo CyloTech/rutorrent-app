@@ -8,7 +8,7 @@ cat << EOF >> /etc/supervisor/conf.d/initplugins.conf
 [program:initplugins]
 command=/usr/local/bin/php /var/www/html/php/initplugins.php
 autostart=true
-autorestart=true
+autorestart=false
 priority=1
 stdout_events_enabled=true
 stderr_events_enabled=true
@@ -24,7 +24,7 @@ command=/bin/su -s /bin/bash -c "TERM=xterm rtorrent" nginx
 autostart=true
 autorestart=true
 priority=2
-stdout_events_enabled=true
+stdout_events_enabled=false
 stderr_events_enabled=true
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
@@ -38,7 +38,7 @@ command=/bin/su -s /bin/bash -c "TERM=xterm irssi" nginx
 autostart=true
 autorestart=true
 priority=3
-stdout_events_enabled=true
+stdout_events_enabled=false
 stderr_events_enabled=true
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0

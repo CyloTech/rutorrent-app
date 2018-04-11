@@ -100,7 +100,10 @@ RUN cd /var/www/html/plugins/ && \
     mv ruTorrent-Themes/* . && \
     rm -rf ruTorrent-Themes && \
     rm -rf ./*.png && \
-    rm -rf ./*.md
+    rm -rf ./*.jpg && \
+    rm -rf ./*.md && \
+    rm -rf club-QuickBox && \
+    git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
 
 RUN	mkdir -p /var/cache/nginx/.irssi/scripts/autorun && \
     cd /var/cache/nginx/.irssi/scripts && \
