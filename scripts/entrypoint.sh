@@ -79,6 +79,8 @@ cat << EOF >> /torrents/config/rtorrent/autodl/autodl.cfg
 [options]
 gui-server-port = ${irssi_port}
 gui-server-password = ${irssi_pass}
+upload-watch-dir = /torrents/watch/
+upload-type = watchdir
 EOF
 fi
 
