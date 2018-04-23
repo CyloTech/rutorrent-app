@@ -32,7 +32,9 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && apk update && \
     ca-certificates \
     coreutils \
     file \
-    cksfv
+    cksfv \
+    fontconfig \
+    ttf-freefont
 
 RUN docker-php-ext-install xml sockets
 
@@ -133,6 +135,9 @@ ADD sources/.rtorrent.rc /sources/.rtorrent.rc
 ADD sources/filemanager.conf /var/www/html/plugins/filemanager/conf.php
 ADD sources/nginx-site.conf /etc/nginx/sites-available/default.conf
 ADD scripts/entrypoint.sh /scripts/entrypoint.sh
+ADD scripts/ffmpeg /usr/bin/ffmpeg
+ADD scripts/ffprobe /usr/bin/ffprobe
+
 RUN chmod -R +x /scripts
 RUN apk del .build-deps  && rm -rf /tmp/* && \
     rm -rf /var/cache/apk/*
