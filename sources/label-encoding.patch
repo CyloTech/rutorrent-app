@@ -1,0 +1,22 @@
+From f169d2be4e79337ba9f97ba4bd0455bc3c76fcfb Mon Sep 17 00:00:00 2001
+From: Grant Millar <grant@cylo.io>
+Date: Mon, 30 Apr 2018 18:35:03 +0100
+Subject: [PATCH] Update webui.js
+
+---
+ js/webui.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/js/webui.js b/js/webui.js
+index be68e2b9..10ee04be 100644
+--- a/js/webui.js
++++ b/js/webui.js
+@@ -2033,7 +2033,7 @@ var theWebUI =
+    		for(var k in sr) 
+    		{
+       			if(sr[k] && (this.torrents[k].label != lbl))
+-      				req += ("&hash=" + k + "&s=label&v=" + encodeURIComponent(lbl));
++      				req += ("&hash=" + k + "&s=label&v=" + lbl);
+ 		}
+ 		if(req.length>0)
+ 			this.request("?action=setlabel"+req+"&list=1",[this.addTorrents, this]);

@@ -31,24 +31,18 @@ throttle.max_uploads.set = 100
 #throttle.global_up.max_rate.set_kb = 0
 
 # Default directory to save the downloaded torrents.
-directory.default.set = /torrents/downloading
-method.insert = d.get_finished_dir, simple, "cat=/torrents/completed/,$d.custom1="
-method.insert = d.get_data_full_path, simple, "branch=((d.is_multi_file)),((cat,(d.directory))),((cat,(d.directory),/,(d.name)))"
-method.insert = d.move_to_complete, simple, "d.directory.set=$argument.1=; execute=mkdir,-p,$argument.1=; execute=mv,-f,$argument.0=,$argument.1=; d.save_full_session=;d.stop=;d.start="
-method.set_key = event.download.finished,move_complete,"d.move_to_complete=$d.get_data_full_path=,$d.get_finished_dir="
+directory = /torrents/downloading
 
 # Default session directory. Make sure you don't run multiple instance
 # of rtorrent using the same session directory. Perhaps using a
 # relative path?
 session.path.set = /torrents/config/rtorrent/session
 
-# Watch a directory for new torrents, and stop those that have been
-# deleted.
-schedule2 = watch_directory,5,5,load_start=/torrents/watch/*.torrent
-#schedule2 = untied_directory,5,5,stop_untied=
-
 # Close torrents when diskspace is low.
-#schedule2 = low_diskspace,5,60,close_low_diskspace=100M
+schedule2 = low_diskspace,5,60,close_low_diskspace=1G
+
+# Save all the session in every 12 hours instead of the default 20 minutes.
+schedule2 = session_save, 1200, 43200, ((session.save))
 
 # The ip address reported to the tracker.
 #
