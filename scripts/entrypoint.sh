@@ -171,6 +171,8 @@ if [ ! -f /torrents/config/rutorrent/html/.htpasswd ]; then
 fi
 
 ###########################[ PERMISSIONS ]###############################
+# Make it so users can see /torrents/home
+sed -i 's/true/false/g' /torrents/config/rutorrent/html/plugins/_getdir/conf.php
 
 # Don't chown -R /torrents/home !
 ls -d /torrents/* | grep -v home | xargs -d "\n" chown -R nginx:nginx
