@@ -9,7 +9,10 @@ if [ ! -d /torrents/config/rutorrent/html ]; then
 fi
 
 # Remove in this version! we need to reset them all!
-if [[ $(grep 'method.insert = d.move_to_complete, simple, "d.directory.set=$argument.1=; execute=mkdir,-p,$argument.1=; execute=mv,-f,$argument.0=,$argument.1=; d.save_full_session=;d.stop=;d.start="' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+if [[ ! $(grep '3.8-3' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+    echo "Delete rtorrent.rc and replace with new version"
+    # Only for this version as theme didnt set?
+    sed -i 's/rTheme/club-QuickBox/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
     rm -f /torrents/config/rtorrent/.rtorrent.rc
 fi
 
@@ -133,10 +136,12 @@ mkdir -p /torrents/watch
 mkdir -p /torrents/config/rtorrent/session
 mkdir -p /torrents/config/log/rtorrent
 mkdir -p /torrents/config/rutorrent/torrents
+mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings
+mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/torrents
 
-if [ ! -d /torrents/config/rutorrent/users/${RUTORRENT_USER}/torrents ]
+if [ ! -f /torrents/config/rutorrent/users/gjmac/settings/theme.dat ]
     then
-    mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/torrents
+    echo 'O:6:"club-QuickBox":2:{s:4:"hash";s:9:"theme.dat";s:7:"current";s:0:"";}' > /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
 fi
 
 if [ ! -f /torrents/config/rtorrent/.rtorrent.rc ]

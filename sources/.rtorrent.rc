@@ -1,6 +1,4 @@
-# This is an example resource file for rTorrent. Copy to
-# ~/.rtorrent.rc and enable/modify the options as needed. Remember to
-# uncomment the options you wish to enable.
+# Appbox ruTorrent 3.8-3 config
 
 scgi_port=127.0.0.1:5000
 encoding_list = UTF-8
@@ -15,20 +13,51 @@ log.add_output = "error", "rtorrent.log"
 #log.add_output = "debug", "rtorrent.log"
 
 # Maximum and minimum number of peers to connect to per torrent.
-throttle.min_peers.normal.set = 40
-throttle.max_peers.normal.set = 100
+throttle.min_peers.normal.set = 200
+throttle.max_peers.normal.set = 500
 
 # Same as above but for seeding completed torrents (-1 = same as downloading)
-throttle.min_peers.seed.set = 10
-throttle.max_peers.seed.set = 100
+throttle.min_peers.seed.set = -1
+throttle.max_peers.seed.set = -1
 
 # Maximum number of simultanious uploads per torrent.
-throttle.max_uploads.set = 100
+throttle.max_downloads.set = 500
+throttle.max_uploads.set = 500
 
 # Global upload and download rate in KiB. "0" for unlimited.
 #
-#throttle.global_down.max_rate.set_kb = 0
-#throttle.global_up.max_rate.set_kb = 0
+throttle.global_down.max_rate.set_kb = 0
+throttle.global_up.max_rate.set_kb = 0
+
+# Set the numwant field sent to the tracker, which indicates how many peers we want.
+#  A negative value disables this feature. Default: `-1` (`tracker_numwant`)
+trackers.numwant.set = 500
+
+# Maximum number of connections rtorrent can accept/make (`sockets`)
+network.max_open_sockets.set = 9999
+
+# Maximum number of open files rtorrent can keep open (you have to modify the system wide settings with ulimit!) (`set_max_open_files`)
+network.max_open_files.set = 9999
+
+# Maximum number of simultaneous HTTP request (used by announce or scrape requests) Default: `32` (`set_max_open_http`)
+network.http.max_open.set = 999
+
+# Send and receive buffer size for socket. Disabled by default (`0`), this means the default is used by OS
+#  (you have to modify the system wide settings!) (`send_buffer_size`, `receive_buffer_size`)
+# Increasing buffer sizes may help reduce disk seeking, connection polling as more data is buffered each time
+#  the socket is written to. It will result higher memory usage (not visible in rtorrent process!).
+network.receive_buffer.size.set =  4M
+network.send_buffer.size.set    = 12M
+
+# Preloading a piece of a file. Default: `0` Possible values: `0` (Off) , `1` (Madvise) , `2` (Direct paging).
+pieces.preload.type.set = 2
+#pieces.preload.min_size.set = 262144
+#pieces.preload.min_rate.set = 5120
+
+# Set the max amount of memory address space used to mapping file chunks. This refers to memory mapping, not
+#  physical memory allocation. Default: `1GB` (`max_memory_usage`)
+# This may also be set using ulimit -m where 3/4 will be allocated to file chunks.
+pieces.memory.max.set = 2048M
 
 # Default directory to save the downloaded torrents.
 directory = /torrents/downloading
@@ -95,7 +124,14 @@ dht.mode.set = auto
 dht.port.set=DHT_PORT
 
 # Disable SSL verification
-network.http.ssl_verify_peer.set=0
+network.http.ssl_verify_host.set = 0
+network.http.ssl_verify_peer.set = 0
+
+# CURL option to lower DNS timeout. Default: `60`.
+network.http.dns_cache_timeout.set = 25
+
+# Max packet size using xmlrpc. Default: `524288` (xmlrpc_size_limit)
+network.xmlrpc.size_limit.set = 2M
 
 # Enable peer exchange (for torrents not marked private)
 #
@@ -104,3 +140,6 @@ protocol.pex.set = yes
 # Set downlad list layout style. ("full", "compact")
 #
 #ui.torrent_list.layout.set = "full"
+
+# Whether to allocate disk space for a new torrent. Default: `0`
+system.file.allocate.set = 0
