@@ -48,6 +48,10 @@ RUN apk add --no-cache --virtual .build-deps \
 
 RUN pecl install geoip-1.1.1
 RUN echo "extension=geoip.so" > /usr/local/etc/php/conf.d/cylo-geoip.ini
+RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz && \
+    gunzip GeoIP.dat.gz && \
+    mkdir -p /usr/share/GeoIP && \
+    mv GeoIP.dat /usr/share/GeoIP/GeoIP.dat
 RUN git clone https://github.com/mcrapet/plowshare && cd plowshare && make install && plowmod --install && cd .. && rm -rf plowshare
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main -U cppunit-dev==1.13.2-r1 cppunit==1.13.2-r1
 RUN /bin/su -s /bin/bash -c "cd && \
