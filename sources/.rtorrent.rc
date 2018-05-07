@@ -13,16 +13,16 @@ log.add_output = "error", "rtorrent.log"
 #log.add_output = "debug", "rtorrent.log"
 
 # Maximum and minimum number of peers to connect to per torrent.
-throttle.min_peers.normal.set = 200
-throttle.max_peers.normal.set = 500
+throttle.min_peers.normal.set = 150
+throttle.max_peers.normal.set = 175
 
 # Same as above but for seeding completed torrents (-1 = same as downloading)
 throttle.min_peers.seed.set = -1
 throttle.max_peers.seed.set = -1
 
 # Maximum number of simultanious uploads per torrent.
-throttle.max_downloads.set = 500
-throttle.max_uploads.set = 500
+throttle.max_downloads.set = 350
+throttle.max_uploads.set = 350
 
 # Global upload and download rate in KiB. "0" for unlimited.
 #
@@ -31,33 +31,37 @@ throttle.global_up.max_rate.set_kb = 0
 
 # Set the numwant field sent to the tracker, which indicates how many peers we want.
 #  A negative value disables this feature. Default: `-1` (`tracker_numwant`)
-trackers.numwant.set = 500
+trackers.numwant.set = 100
 
 # Maximum number of connections rtorrent can accept/make (`sockets`)
-network.max_open_sockets.set = 9999
+network.max_open_sockets.set = 1500
 
 # Maximum number of open files rtorrent can keep open (you have to modify the system wide settings with ulimit!) (`set_max_open_files`)
-network.max_open_files.set = 9999
+network.max_open_files.set = 800
 
 # Maximum number of simultaneous HTTP request (used by announce or scrape requests) Default: `32` (`set_max_open_http`)
-network.http.max_open.set = 999
+network.http.max_open.set = 100
 
 # Send and receive buffer size for socket. Disabled by default (`0`), this means the default is used by OS
 #  (you have to modify the system wide settings!) (`send_buffer_size`, `receive_buffer_size`)
 # Increasing buffer sizes may help reduce disk seeking, connection polling as more data is buffered each time
 #  the socket is written to. It will result higher memory usage (not visible in rtorrent process!).
-network.receive_buffer.size.set =  4M
-network.send_buffer.size.set    = 12M
+network.receive_buffer.size.set = 64M
+network.send_buffer.size.set = 64M
 
 # Preloading a piece of a file. Default: `0` Possible values: `0` (Off) , `1` (Madvise) , `2` (Direct paging).
-pieces.preload.type.set = 2
+pieces.preload.type.set = 1
+pieces.preload.min_size.set = 1
+pieces.preload.min_rate.set = 1
+
+#pieces.preload.type.set = 2
 #pieces.preload.min_size.set = 262144
 #pieces.preload.min_rate.set = 5120
 
 # Set the max amount of memory address space used to mapping file chunks. This refers to memory mapping, not
 #  physical memory allocation. Default: `1GB` (`max_memory_usage`)
 # This may also be set using ulimit -m where 3/4 will be allocated to file chunks.
-pieces.memory.max.set = 2048M
+pieces.memory.max.set = 5120M
 
 # Default directory to save the downloaded torrents.
 directory = /torrents/downloading
@@ -71,7 +75,7 @@ session.path.set = /torrents/config/rtorrent/session
 schedule2 = low_diskspace,5,60,close_low_diskspace=1G
 
 # Save all the session in every 12 hours instead of the default 20 minutes.
-schedule2 = session_save, 1200, 43200, ((session.save))
+#schedule2 = session_save, 1200, 43200, ((session.save))
 
 # The ip address reported to the tracker.
 #
