@@ -1,4 +1,4 @@
-# Appbox ruTorrent 3.8-3 config
+# Appbox ruTorrent 3.8-5 config
 
 scgi_port=127.0.0.1:5000
 encoding_list = UTF-8

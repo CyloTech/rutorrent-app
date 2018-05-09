@@ -9,7 +9,7 @@ if [ ! -d /torrents/config/rutorrent/html ]; then
 fi
 
 # Remove in this version! we need to reset them all!
-if [[ ! $(grep '3.8-3' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+if [[ ! $(grep '3.8-5' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
     echo "Delete rtorrent.rc and replace with new version"
     # Only for this version as theme didnt set?
     sed -i 's/rTheme/club-QuickBox/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
