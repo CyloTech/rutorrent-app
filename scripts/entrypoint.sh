@@ -9,7 +9,7 @@ if [ ! -d /torrents/config/rutorrent/html ]; then
 fi
 
 # Remove in this version! we need to reset them all!
-if [[ ! $(grep '3.8-5' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+if [[ ! $(grep '3.8-7' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
     echo "Delete rtorrent.rc and replace with new version"
     # Only for this version as theme didnt set?
     sed -i 's/rTheme/club-QuickBox/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
@@ -139,6 +139,9 @@ mkdir -p /torrents/config/rutorrent/torrents
 mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings
 mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/torrents
 
+# Remove any autotools.dat which would interfere with ours
+rm -f /torrents/config/rutorrent/settings/autotools.dat
+
 if [ ! -f /torrents/config/rutorrent/users/gjmac/settings/theme.dat ]
     then
     echo 'O:6:"club-QuickBox":2:{s:4:"hash";s:9:"theme.dat";s:7:"current";s:0:"";}' > /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
@@ -154,6 +157,10 @@ if [ ! -f /torrents/config/rtorrent/.rtorrent.rc ]
     sed -i 's#300#30#g' /torrents/config/rutorrent/html/plugins/autotools/conf.php
     sed -i 's/$defaultTheme = ""/$defaultTheme = "club-QuickBox"/g' /torrents/config/rutorrent/html/plugins/theme/conf.php
     mkdir -p '/torrents/config/rutorrent/users/'${RUTORRENT_USER}'/settings/'
+fi
+
+if [ ! -f /torrents/config/rtorrent/.rtorrent.rc ]
+    then
     cp /sources/autotools.dat '/torrents/config/rutorrent/users/'${RUTORRENT_USER}'/settings/autotools.dat'
 fi
 
