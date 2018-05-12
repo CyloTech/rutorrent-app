@@ -27,6 +27,7 @@ RUN NB_CORES=-j${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && apk update && \
     file \
     cksfv \
     fontconfig \
+    sed \
     ttf-freefont
 
 RUN docker-php-ext-install xml sockets

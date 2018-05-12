@@ -8,13 +8,13 @@ if [ ! -d /torrents/config/rutorrent/html ]; then
     cp -avr /sources/html/* /torrents/config/rutorrent/html/
 fi
 
-# Remove in this version! we need to reset them all!
-if [[ ! $(grep '3.8-7' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
-    echo "Delete rtorrent.rc and replace with new version"
-    # Only for this version as theme didnt set?
-    sed -i 's/rTheme/club-QuickBox/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
-    rm -f /torrents/config/rtorrent/.rtorrent.rc
-fi
+# Only needed if we need to reset .rtorrent.rc
+#if [[ ! $(grep '3.8-7' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+#    echo "Delete rtorrent.rc and replace with new version"
+#    # Only for this version as theme didnt set?
+#    sed -i 's/rTheme/club-QuickBox/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
+#    rm -f /torrents/config/rtorrent/.rtorrent.rc
+#fi
 
 ###########################[ SUPERVISOR SCRIPTS ]###############################
 
@@ -22,7 +22,6 @@ if [ ! -d /etc/supervisor/conf.d ]; then
     mkdir -p /etc/supervisor/conf.d
 cat << EOF >> /etc/supervisor/conf.d/initplugins.conf
 [program:initplugins]
-command=
 command=/bin/su -s /bin/bash -c "TERM=xterm /usr/local/bin/php /torrents/config/rutorrent/html/php/initplugins.php" nginx
 autostart=true
 autorestart=false
@@ -157,6 +156,9 @@ if [ ! -f /torrents/config/rtorrent/.rtorrent.rc ]
     sed -i 's#300#30#g' /torrents/config/rutorrent/html/plugins/autotools/conf.php
     sed -i 's/$defaultTheme = ""/$defaultTheme = "club-QuickBox"/g' /torrents/config/rutorrent/html/plugins/theme/conf.php
     mkdir -p '/torrents/config/rutorrent/users/'${RUTORRENT_USER}'/settings/'
+else
+    sed -i 's#network.port_range.set = [0-9]*-[0-9]*#network.port_range.set = '${LISTENING_PORT}'-'${LISTENING_PORT}'#g' /torrents/config/rtorrent/.rtorrent.rc
+    sed -i 's#dht.port.set=[0-9]*#dht.port.set='${DHT_PORT}'#g' /torrents/config/rtorrent/.rtorrent.rc
 fi
 
 if [ ! -f /torrents/config/rtorrent/.rtorrent.rc ]
