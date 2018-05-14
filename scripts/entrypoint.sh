@@ -171,6 +171,8 @@ if [ ! -f /var/cache/nginx/.rtorrent.rc ]
     ln -s /torrents/config/rtorrent/.rtorrent.rc /var/cache/nginx/
 fi
 
+sed -i 's#null;#48;#g' /torrents/config/rutorrent/html/plugins/cpuload/conf.php
+
 rm -f /torrents/config/rtorrent/session/rtorrent.lock
 ###########################[ NGINX SETUP ]###############################
 
