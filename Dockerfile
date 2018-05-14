@@ -110,7 +110,6 @@ RUN cd /sources/html/plugins/ && \
     sed -i 's/changeWhat = "cell-background";/changeWhat = "font";/g' ratiocolor/init.js && \
     git clone https://github.com/Gyran/rutorrent-instantsearch instantsearch && \
     git clone https://github.com/Korni22/rutorrent-logoff logoff && \
-    git clone https://github.com/xombiemp/rutorrentMobile && \
     git clone https://github.com/dioltas/AddZip && \
     git clone https://github.com/orobardet/rutorrent-force_save_session force_save_session && \
     git clone https://github.com/AceP1983/ruTorrent-plugins && \
