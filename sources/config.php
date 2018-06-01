@@ -3,11 +3,11 @@
 
 	// for snoopy client
 	@define('HTTP_USER_AGENT', 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0', true);
-	@define('HTTP_TIME_OUT', 120, true);	// in seconds
+	@define('HTTP_TIME_OUT', 300, true);	// in seconds
 	@define('HTTP_USE_GZIP', true, true);
 	$httpIP = null;				// IP string. Or null for any.
 
-	@define('RPC_TIME_OUT', 60, true);	// in seconds
+	@define('RPC_TIME_OUT', 300, true);	// in seconds
 
 	@define('LOG_RPC_CALLS', false, true);
 	@define('LOG_RPC_FAULTS', true, true);
@@ -27,21 +27,21 @@
 	$topDirectory = '/torrents/';			// Upper available directory. Absolute path with trail slash.
 	$forbidUserSettings = false;
 
-	$scgi_port = 5000;
-	$scgi_host = "127.0.0.1";
+    // $scgi_port = 5000;
+    // $scgi_host = "127.0.0.1";
 
 	// For web->rtorrent link through unix domain socket 
 	// (scgi_local in rtorrent conf file), change variables 
 	// above to something like this:
 	//
-	// $scgi_port = 0;
-	// $scgi_host = "unix:///tmp/rpc.socket";
+    $scgi_port = 0;
+    $scgi_host = "unix:///torrents/config/rtorrent/.rtorrent.sock";
 
 	$XMLRPCMountPoint = "/RPC2";		// DO NOT DELETE THIS LINE!!! DO NOT COMMENT THIS LINE!!!
 
 	$pathToExternals = array(
 		"php" 	=> '',			// Something like /usr/bin/php. If empty, will be found in PATH.
-		"curl"	=> '/var/cache/nginx/.local/rtorrent/0.9.6-PS-1.1-dev/bin/curl',	// Something like /usr/bin/curl. If empty, will be found in PATH.
+		"curl"	=> '/usr/bin/curl',	// Something like /usr/bin/curl. If empty, will be found in PATH.
 		"gzip"	=> '',			// Something like /usr/bin/gzip. If empty, will be found in PATH.
 		"id"	=> '',			// Something like /usr/bin/id. If empty, will be found in PATH.
 		"stat"	=> '/usr/bin/stat',	// Something like /usr/bin/stat. If empty, will be found in PATH.

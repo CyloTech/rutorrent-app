@@ -1,6 +1,9 @@
-# Appbox ruTorrent 3.8-7 config
+# Appbox ruTorrent 3.8-11 config
 
-scgi_port=127.0.0.1:5000
+execute.nothrow = rm,/torrents/config/rtorrent/.rtorrent.sock
+network.scgi.open_local = /torrents/config/rtorrent/.rtorrent.sock
+schedule = socket_chmod,0,0,"execute=chmod,0666,/torrents/config/rtorrent/.rtorrent.sock"
+schedule = socket_chgrp,0,0,"execute=chgrp,rtorrent-socket,/torrents/config/rtorrent/.rtorrent.sock"
 encoding_list = UTF-8
 
 log.open_file = "rtorrent.log", "/torrents/config/log/rtorrent/rtorrent.log"
@@ -114,7 +117,7 @@ trackers.use_udp.set = yes
 # outgoing connections but retries with encryption if they fail, preferring
 # plaintext to RC4 encryption after the encrypted handshake
 #
-# protocol.encryption.set = allow_incoming,enable_retry,prefer_plaintext
+encryption = allow_incoming, try_outgoing, enable_retry
 
 # Enable DHT support for trackerless torrents or when all trackers are down.
 # May be set to "disable" (completely disable DHT), "off" (do not start DHT),
@@ -135,7 +138,7 @@ network.http.ssl_verify_peer.set = 0
 network.http.dns_cache_timeout.set = 25
 
 # Max packet size using xmlrpc. Default: `524288` (xmlrpc_size_limit)
-network.xmlrpc.size_limit.set = 2M
+network.xmlrpc.size_limit.set = 4M
 
 # Enable peer exchange (for torrents not marked private)
 #

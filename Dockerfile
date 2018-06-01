@@ -1,74 +1,65 @@
-FROM repo.cylo.io/alpine-lep
+FROM ubuntu
+USER root
 
+ENV LANG en_US.UTF-8
 ENV RUTORRENT_VERSION master
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN NB_CORES=-j${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && apk update && \
-    apk add --no-cache \
-    mediainfo \
-    unzip \
-    gzip \
+RUN apt-get update && apt-get install -y git && \
+    apt-get update && \
+    apt-get install -y \
+    locales \
+    locales-all \
     tar \
-    geoip-dev \
-    wget \
-    irssi \
-    irssi-perl \
-    sox \
+    gzip \
+    unzip \
     zip \
-    bzip2 \
-    ffmpeg \
-    findutils \
-    perl-xml-libxml \
-    perl-json \
-    perl-archive-zip \
-    perl-html-parser \
-    perl-net-ssleay \
-    ca-certificates \
-    coreutils \
-    file \
-    cksfv \
-    fontconfig \
-    sed \
-    ttf-freefont
-
-RUN docker-php-ext-install xml sockets
-
-RUN apk add --no-cache --virtual .build-deps \
-    build-base \
-    libtool \
-    automake \
-    autoconf \
+    unrar \
+    rar \
+    mediainfo \
+    curl \
+    nginx \
     wget \
-    binutils \
-    cppunit-dev \
-    libressl-dev \
-    ncurses-dev \
-    zlib-dev \
-    xz \
-    subversion \
-    patch
+    supervisor \
+    libarchive-zip-perl \
+    libjson-perl \
+    libxml-libxml-perl \
+    irssi \
+    sox \
+    cksfv \
+    bzip2 \
+    libgeoip-dev \
+    software-properties-common && \
+    add-apt-repository ppa:ondrej/php && \
+    apt update && \
+    apt install -y \
+    php7.2-fpm \
+    plowshare \
+    plowshare-modules \
+    openssl \
+    php7.2-xml && \
+    rm /etc/php/7.2/fpm/php.ini
 
+RUN apt install -y php-pear php7.2-dev
 RUN pecl install geoip-1.1.1
-RUN echo "extension=geoip.so" > /usr/local/etc/php/conf.d/cylo-geoip.ini
-RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz && \
-    gunzip GeoIP.dat.gz && \
-    mkdir -p /usr/share/GeoIP && \
-    mv GeoIP.dat /usr/share/GeoIP/GeoIP.dat
-RUN git clone https://github.com/mcrapet/plowshare && cd plowshare && make install && plowmod --install && cd .. && rm -rf plowshare
-RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main -U cppunit-dev==1.13.2-r1 cppunit==1.13.2-r1
+RUN echo "extension=geoip.so" > /etc/php/7.2/fpm/conf.d/cylo-geoip.ini
+RUN apt remove -y php-pear php7.2-dev
+
+RUN apt-get install -y lsb-release build-essential pkg-config \
+    subversion git time lsof binutils tmux curl wget \
+    python-setuptools python-virtualenv python-dev \
+    libssl-dev zlib1g-dev libncurses-dev libncursesw5-dev \
+    libcppunit-dev autoconf automake libtool \
+    libffi-dev libxml2-dev libxslt1-dev
+RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/nologin --group --uid 1000 nginx
 RUN /bin/su -s /bin/bash -c "cd && \
 TERM=xterm git clone https://github.com/CyloTech/rtorrent-ps.git && \
 cd rtorrent-ps && \
-nice time ./build.sh all && \
+nice ./build.sh all && \
 cd && \
 rm -rf rtorrent-ps" nginx
 
-RUN curl -fSL http://www.rarlab.com/rar/rarlinux-5.3.0.tar.gz -o rar.tar.gz && \
-    tar -xzvf rar.tar.gz && \
-    mv rar/rar_static /usr/bin/rar && \
-    ln -s /usr/bin/rar /usr/bin/unrar && \
-    rm -rf rar*
-
-RUN mkdir -p /sources/html/
+RUN mkdir -p /sources/html/ && mkdir -p /run/php
 
 RUN curl -fSL https://github.com/Novik/ruTorrent/archive/$RUTORRENT_VERSION.tar.gz -o rutorrent.tar.gz && \
     tar xzf rutorrent.tar.gz && \
@@ -105,6 +96,7 @@ RUN	mkdir -p /var/cache/nginx/.irssi/scripts/autorun && \
     echo "load perl" > /var/cache/nginx/.irssi/startup
 
 RUN cd /sources/html/plugins/ && \
+    git clone https://github.com/xombiemp/rutorrentMobile.git mobile && \
     git clone https://github.com/Gyran/rutorrent-pausewebui pausewebui && \
     git clone https://github.com/Gyran/rutorrent-ratiocolor ratiocolor && \
     sed -i 's/changeWhat = "cell-background";/changeWhat = "font";/g' ratiocolor/init.js && \
@@ -115,29 +107,34 @@ RUN cd /sources/html/plugins/ && \
     git clone https://github.com/AceP1983/ruTorrent-plugins && \
     mv ruTorrent-plugins/* . && \
     rm -rf ruTorrent-plugins && \
-    git clone https://github.com/radonthetyrant/rutorrent-discord.git
+    git clone https://github.com/radonthetyrant/rutorrent-discord.git && \
+    rm -rf ipad
 
-# Patch rutorrent erase data!
-ADD sources/erasedata.patch /sources/erasedata.patch
-RUN cd /sources/html/ && \
-    patch -p1 < /sources/erasedata.patch
-
-ADD sources/label-encoding.patch /sources/label-encoding.patch
-RUN cd /sources/html/ && \
-    patch -p1 < /sources/label-encoding.patch
-
+ADD sources/docker-vars.ini /etc/php/7.2/fpm/conf.d/docker-vars.ini
+ADD sources/supervisord.conf /etc/supervisord.conf
 ADD sources/config.php /sources/html/conf/config.php
 ADD sources/.rtorrent.rc /sources/.rtorrent.rc
 ADD sources/autotools.dat /sources/autotools.dat
 ADD sources/filemanager.conf /sources/html/plugins/filemanager/conf.php
-ADD sources/nginx-site.conf /etc/nginx/sites-available/default.conf
-ADD scripts/entrypoint.sh /scripts/entrypoint.sh
+ADD sources/nginx-site.conf /etc/nginx/sites-enabled/default
+ADD sources/www.conf /etc/php/7.2/fpm/pool.d/www.conf
+ADD sources/nginx.conf /etc/nginx/nginx.conf
+ADD scripts/start.sh /scripts/start.sh
 ADD sources/ffmpeg /usr/bin/ffmpeg
 ADD sources/ffprobe /usr/bin/ffprobe
 
 RUN chmod -R +x /scripts
-RUN apk del .build-deps  && rm -rf /tmp/* && \
-    rm -rf /var/cache/apk/*
 
-ENTRYPOINT [ "/scripts/entrypoint.sh" ]
-CMD [ "/start.sh" ]
+RUN apt-get remove -y lsb-release build-essential pkg-config \
+    subversion git time lsof binutils \
+    python-setuptools python-virtualenv python-dev \
+    libssl-dev zlib1g-dev libncurses-dev libncursesw5-dev \
+    libcppunit-dev autoconf automake libtool \
+    libffi-dev libxml2-dev libxslt1-dev
+RUN rm -rf /tmp/*
+RUN apt autoremove -y
+RUN rm -rf /var/lib/apt/lists/*
+
+EXPOSE 80
+
+CMD [ "/scripts/start.sh" ]
