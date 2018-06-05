@@ -8,8 +8,11 @@ if [ ! -d /torrents/config/rutorrent/html ]; then
     cp -avr /sources/html/* /torrents/config/rutorrent/html/
 fi
 
+apt update
+apt install -y git
+
 # Only needed if we need to reset .rtorrent.rc
-if [[ ! $(grep '3.8-11' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+if [[ ! $(grep '3.8-11' /torrents/config/rtorrent/.rtorrent.rc) && ! $(grep '3.8-15' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
     sed -i 's/"webui.reqtimeout":"30000"/"webui.reqtimeout":"60000"/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/uisettings.json
     sed -i 's/"webui.ignore_timeouts":0/"webui.ignore_timeouts":1/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/uisettings.json
     sed -i '/network.http.ssl_verify_host.set/d' /torrents/config/rtorrent/.rtorrent.rc
@@ -30,27 +33,31 @@ schedule = socket_chgrp,0,0,"execute=chgrp,rtorrent-socket,/torrents/config/rtor
     if [ -d /torrents/config/rutorrent/html/plugins/ipad ]; then
         rm -rf /torrents/config/rutorrent/html/plugins/ipad
         rm -rf /torrents/config/rutorrent/html/plugins/rutorrentMobile
-        apt update
-        apt install -y git
         git clone https://github.com/xombiemp/rutorrentMobile.git /torrents/config/rutorrent/html/plugins/mobile
     fi
 fi
 
-###########################[ SUPERVISOR SCRIPTS ]###############################
-cat << EOF > /etc/supervisor/conf.d/initplugins.conf
-[program:initplugins]
-command=/bin/su -s /bin/bash -c "TERM=xterm /usr/bin/php /torrents/config/rutorrent/html/php/initplugins.php" nginx
-autostart=true
-autorestart=false
-priority=1
-stdout_events_enabled=true
-stderr_events_enabled=true
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-EOF
+if [[ $(grep '3.8-11' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+    sed -i 's/3.8-11/3.8-15/g' /torrents/config/rtorrent/.rtorrent.rc
+    sed -i '/system.file.allocate.set/a \
+\
+execute = {sh,-c,/usr/bin/php /torrents/config/rutorrent/html/php/initplugins.php '${RUTORRENT_USER}' &}' /torrents/config/rtorrent/.rtorrent.rc
+    mkdir -p /torrents/config/autodl-irssi/autodl
+    mkdir -p /torrents/config/autodl-irssi/irssi
 
+    rm -rf /var/cache/nginx/.autodl
+    mv /torrents/config/rtorrent/autodl/* /torrents/config/autodl-irssi/autodl/
+    rm -r /torrents/config/rtorrent/autodl
+    ln -s /torrents/config/autodl-irssi/autodl /var/cache/nginx/.autodl
+
+    mv /var/cache/nginx/.irssi/* /torrents/config/autodl-irssi/irssi/
+    rm -r /var/cache/nginx/.irssi
+    ln -s /torrents/config/autodl-irssi/irssi /var/cache/nginx/.irssi
+
+    rm -rf /torrents/config/rutorrent/html/plugins/cpuload
+fi
+
+###########################[ SUPERVISOR SCRIPTS ]###############################
 cat << EOF > /etc/supervisor/conf.d/rtorrent.conf
 [program:rtorrent]
 command=/bin/su -s /bin/bash -c "export TERM=screen-256color && ulimit -Sn 65535; /var/cache/nginx/.local/rtorrent/0.9.6-PS-1.1-dev/bin/rtorrent-extended" nginx
@@ -117,23 +124,37 @@ EOF
 
 ###########################[ IRSSI SETUP ]###############################
 # Set up .autodl dir, and allow for configs to be saved.
-if [ ! -d /torrents/config/rtorrent/autodl ]
+if [ ! -d /torrents/config/autodl-irssi/autodl ]
 then
-    echo "Did not find /torrents/config/rtorrent/autodl existed. Creating it."
-    mkdir -p /torrents/config/rtorrent/autodl
+    echo "Did not find /torrents/config/autodl-irssi/autodl existed. Creating it."
+    mkdir -p /torrents/config/autodl-irssi/autodl
+fi
+
+if [ ! -d /torrents/config/autodl-irssi/irssi ]
+then
+    echo "Did not find /torrents/config/autodl-irssi/irssi existed. Creating it."
+    mv /var/cache/nginx/.irssi /torrents/config/autodl-irssi/irssi
 fi
 
 if [ ! -h /var/cache/nginx/.autodl ]
 then
-	echo "Linking autodl config directory to /torrents/config/rtorrent/autodl."
-	ln -s /torrents/config/rtorrent/autodl /var/cache/nginx/.autodl
+	echo "Linking autodl config directory to /torrents/config/autodl-irssi/autodl"
+	ln -s /torrents/config/autodl-irssi/autodl /var/cache/nginx/.autodl
 else
 	echo "Do not need to relink the autodl config directory."
 fi
 
+if [ ! -h /var/cache/nginx/.irssi ]
+then
+	echo "Linking autodl config directory to /torrents/config/autodl-irssi/irssi"
+	ln -s /torrents/config/autodl-irssi/irssi /var/cache/nginx/.irssi
+else
+	echo "Do not need to relink the irssi config directory."
+fi
+
 if [ -f /torrents/config/rtorrent/autodl/autodl.cfg ]
 then
-	echo "Found an existing autodl configs. Will not reinitialize."
+	echo "Found an existing autodl config. Will not reinitialize."
 	irssi_port=$(grep gui-server-port /torrents/config/rtorrent/autodl/autodl.cfg | awk '{print $3}')
 	irssi_pass=$(grep gui-server-password /torrents/config/rtorrent/autodl/autodl.cfg | awk '{print $3}')
 else
@@ -143,7 +164,7 @@ else
 	irssi_port=$((RANDOM%64025+1024))
 	
 	echo "Creating necessary configuration files ... "
-cat << EOF >> /torrents/config/rtorrent/autodl/autodl.cfg
+cat << EOF >> /torrents/config/autodl-irssi/autodl/autodl.cfg
 [options]
 gui-server-port = ${irssi_port}
 gui-server-password = ${irssi_pass}
@@ -156,6 +177,8 @@ fi
 if [ ! -d /torrents/config/rutorrent/html/plugins/autodl-irssi ]
 then
 	echo "Installing web plugin portion."
+	apt update
+	apt install -y git
 	# Web plugin setup.
 	cd /torrents/config/rutorrent/html/plugins/
 	git clone https://github.com/autodl-community/autodl-rutorrent.git autodl-irssi > /dev/null 2>&1
@@ -179,9 +202,6 @@ mkdir -p /torrents/config/rutorrent/torrents
 mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings
 mkdir -p /torrents/config/rutorrent/users/${RUTORRENT_USER}/torrents
 
-# Remove any autotools.dat which would interfere with ours
-# rm -f /torrents/config/rutorrent/settings/autotools.dat
-
 if [ ! -f /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat ]
     then
     echo 'O:6:"club-QuickBox":2:{s:4:"hash";s:9:"theme.dat";s:7:"current";s:0:"";}' > /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/theme.dat
@@ -198,6 +218,7 @@ if [ ! -f /torrents/config/rtorrent/.rtorrent.rc ]
     ln -s /torrents/config/rtorrent/.rtorrent.rc /var/cache/nginx/
     sed -i 's#LISTENING_PORT#'${LISTENING_PORT}'#g' /torrents/config/rtorrent/.rtorrent.rc
     sed -i 's#DHT_PORT#'${DHT_PORT}'#g' /torrents/config/rtorrent/.rtorrent.rc
+    sed -i 's#RUTORRENT_USER#'${RUTORRENT_USER}'#g' /torrents/config/rtorrent/.rtorrent.rc
     sed -i 's#http://mydomain.com#'${EXTERNAL_DOMAIN}'/no-auth#g' /torrents/config/rutorrent/html/plugins/fileshare/conf.php
     sed -i 's#300#30#g' /torrents/config/rutorrent/html/plugins/autotools/conf.php
     sed -i 's/$defaultTheme = ""/$defaultTheme = "club-QuickBox"/g' /torrents/config/rutorrent/html/plugins/theme/conf.php
@@ -212,8 +233,6 @@ if [ ! -f /var/cache/nginx/.rtorrent.rc ]
     then
     ln -s /torrents/config/rtorrent/.rtorrent.rc /var/cache/nginx/
 fi
-
-sed -i 's#null;#48;#g' /torrents/config/rutorrent/html/plugins/cpuload/conf.php
 
 rm -f /torrents/config/rtorrent/session/rtorrent.lock
 

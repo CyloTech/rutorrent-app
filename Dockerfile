@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y git && \
     plowshare \
     plowshare-modules \
     openssl \
+    php7.2-mbstring \
     php7.2-xml && \
     rm /etc/php/7.2/fpm/php.ini
 
@@ -108,7 +109,8 @@ RUN cd /sources/html/plugins/ && \
     mv ruTorrent-plugins/* . && \
     rm -rf ruTorrent-plugins && \
     git clone https://github.com/radonthetyrant/rutorrent-discord.git && \
-    rm -rf ipad
+    rm -rf ipad && \
+    rm -rf cpuload
 
 ADD sources/docker-vars.ini /etc/php/7.2/fpm/conf.d/docker-vars.ini
 ADD sources/supervisord.conf /etc/supervisord.conf
@@ -126,7 +128,7 @@ ADD sources/ffprobe /usr/bin/ffprobe
 RUN chmod -R +x /scripts
 
 RUN apt-get remove -y lsb-release build-essential pkg-config \
-    subversion git time lsof binutils \
+    subversion time lsof binutils \
     python-setuptools python-virtualenv python-dev \
     libssl-dev zlib1g-dev libncurses-dev libncursesw5-dev \
     libcppunit-dev autoconf automake libtool \

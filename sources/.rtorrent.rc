@@ -1,4 +1,4 @@
-# Appbox ruTorrent 3.8-11 config
+# Appbox ruTorrent 3.8-15 config
 
 execute.nothrow = rm,/torrents/config/rtorrent/.rtorrent.sock
 network.scgi.open_local = /torrents/config/rtorrent/.rtorrent.sock
@@ -150,3 +150,5 @@ protocol.pex.set = yes
 
 # Whether to allocate disk space for a new torrent. Default: `0`
 system.file.allocate.set = 0
+
+execute = {sh,-c,/usr/bin/php /home/user/.www/rutorrent/php/initplugins.php RUTORRENT_USER &}
