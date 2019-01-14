@@ -8,11 +8,8 @@ if [ ! -d /torrents/config/rutorrent/html ]; then
     cp -avr /sources/html/* /torrents/config/rutorrent/html/
 fi
 
-apt update
-apt install -y git
-
 # Only needed if we need to reset .rtorrent.rc
-if [[ ! $(grep '3.8-11' /torrents/config/rtorrent/.rtorrent.rc) && ! $(grep '3.8-15' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+if [[ ! $(grep '3.8-11' /torrents/config/rtorrent/.rtorrent.rc) && ! $(grep '3.8-15' /torrents/config/rtorrent/.rtorrent.rc) && ! $(grep '3.8-16' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
     sed -i 's/"webui.reqtimeout":"30000"/"webui.reqtimeout":"60000"/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/uisettings.json
     sed -i 's/"webui.ignore_timeouts":0/"webui.ignore_timeouts":1/g' /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/uisettings.json
     sed -i '/network.http.ssl_verify_host.set/d' /torrents/config/rtorrent/.rtorrent.rc
@@ -55,6 +52,16 @@ execute = {sh,-c,/usr/bin/php /torrents/config/rutorrent/html/php/initplugins.ph
     ln -s /torrents/config/autodl-irssi/irssi /var/cache/nginx/.irssi
 
     rm -rf /torrents/config/rutorrent/html/plugins/cpuload
+fi
+
+if [[ $(grep '3.8-15' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+    sed -i 's/3.8-15/3.8-16/g' /torrents/config/rtorrent/.rtorrent.rc
+    cp /sources/html/plugins/create/conf.php /torrents/config/rutorrent/html/plugins/create/conf.php
+fi
+
+if [[ $(grep '3.8-16' /torrents/config/rtorrent/.rtorrent.rc) ]]; then
+    sed -i 's/3.8-16/3.8-17/g' /torrents/config/rtorrent/.rtorrent.rc
+    sed -i 's/schedule2 = low_diskspace,5,60,close_low_diskspace=1G/schedule2 = low_diskspace,5,60,close_low_diskspace=37G/g' /torrents/config/rtorrent/.rtorrent.rc
 fi
 
 ###########################[ SUPERVISOR SCRIPTS ]###############################
@@ -152,11 +159,11 @@ else
 	echo "Do not need to relink the irssi config directory."
 fi
 
-if [ -f /torrents/config/rtorrent/autodl/autodl.cfg ]
+if [ -f /torrents/config/autodl-irssi/autodl/autodl.cfg ]
 then
 	echo "Found an existing autodl config. Will not reinitialize."
-	irssi_port=$(grep gui-server-port /torrents/config/rtorrent/autodl/autodl.cfg | awk '{print $3}')
-	irssi_pass=$(grep gui-server-password /torrents/config/rtorrent/autodl/autodl.cfg | awk '{print $3}')
+	irssi_port=$(grep gui-server-port /torrents/config/autodl-irssi/autodl/autodl.cfg | awk '{print $3}')
+	irssi_pass=$(grep gui-server-password /torrents/config/autodl-irssi/autodl/autodl.cfg | awk '{print $3}')
 else
 	echo "Need to set up a new autodl install."
 
@@ -177,8 +184,6 @@ fi
 if [ ! -d /torrents/config/rutorrent/html/plugins/autodl-irssi ]
 then
 	echo "Installing web plugin portion."
-	apt update
-	apt install -y git
 	# Web plugin setup.
 	cd /torrents/config/rutorrent/html/plugins/
 	git clone https://github.com/autodl-community/autodl-rutorrent.git autodl-irssi > /dev/null 2>&1
@@ -236,12 +241,13 @@ fi
 
 rm -f /torrents/config/rtorrent/session/rtorrent.lock
 
-# Empty the tasks folders
-if [ -d /torrents/config/rutorrent/settings/tasks ]
+# This got created on old version, delete it!
+if [ -d /torrents/config/rutorrent/settings ]
     then
-    rm -rf /torrents/config/rutorrent/settings/tasks
+    rm -rf /torrents/config/rutorrent/settings
 fi
 
+# Empty the task folders
 if [ -d /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/tasks ]
     then
     rm -rf /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/tasks

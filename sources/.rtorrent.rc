@@ -1,4 +1,4 @@
-# Appbox ruTorrent 3.8-15 config
+# Appbox ruTorrent 3.8-17 config
 
 execute.nothrow = rm,/torrents/config/rtorrent/.rtorrent.sock
 network.scgi.open_local = /torrents/config/rtorrent/.rtorrent.sock
@@ -75,7 +75,7 @@ directory = /torrents/downloading
 session.path.set = /torrents/config/rtorrent/session
 
 # Close torrents when diskspace is low.
-schedule2 = low_diskspace,5,60,close_low_diskspace=1G
+schedule2 = low_diskspace,5,60,close_low_diskspace=37G
 
 # Save all the session in every 12 hours instead of the default 20 minutes.
 #schedule2 = session_save, 1200, 43200, ((session.save))

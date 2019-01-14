@@ -29,22 +29,19 @@ RUN apt-get update && apt-get install -y git && \
     cksfv \
     bzip2 \
     libgeoip-dev \
-    software-properties-common && \
-    add-apt-repository ppa:ondrej/php && \
-    apt update && \
-    apt install -y \
-    php7.2-fpm \
+    php-fpm \
     plowshare \
     plowshare-modules \
     openssl \
-    php7.2-mbstring \
-    php7.2-xml && \
+    mktorrent \
+    php-mbstring \
+    php-xml && \
     rm /etc/php/7.2/fpm/php.ini
 
-RUN apt install -y php-pear php7.2-dev
+RUN apt install -y php-pear php-dev
 RUN pecl install geoip-1.1.1
 RUN echo "extension=geoip.so" > /etc/php/7.2/fpm/conf.d/cylo-geoip.ini
-RUN apt remove -y php-pear php7.2-dev
+RUN apt remove -y php-pear php-dev
 
 RUN apt-get install -y lsb-release build-essential pkg-config \
     subversion git time lsof binutils tmux curl wget \
@@ -75,7 +72,9 @@ RUN curl -fSL https://github.com/Novik/ruTorrent/archive/$RUTORRENT_VERSION.tar.
     chmod 755 /sources/html/plugins/filemanager/scripts/* && \
     mkdir -p /sources/html/no-auth && \
     ln -s /sources/html/plugins/fileshare/share.php /sources/html/no-auth/share.php && \
-    sed -i /getConfFile/d /sources/html/plugins/fileshare/share.php
+    sed -i /getConfFile/d /sources/html/plugins/fileshare/share.php && \
+    sed -i "s/false/'mktorrent'/g" /sources/html/plugins/create/conf.php && \
+    sed -i "s#''#'/usr/bin/mktorrent'#g" /sources/html/plugins/create/conf.php
 
 RUN cd /sources/html/plugins/ && \
     cd /sources/html/plugins/theme/themes  && \
@@ -134,7 +133,7 @@ RUN apt-get remove -y lsb-release build-essential pkg-config \
     libcppunit-dev autoconf automake libtool \
     libffi-dev libxml2-dev libxslt1-dev
 RUN rm -rf /tmp/*
-RUN apt autoremove -y
+RUN apt autoremove -y && apt clean
 RUN rm -rf /var/lib/apt/lists/*
 
 EXPOSE 80
