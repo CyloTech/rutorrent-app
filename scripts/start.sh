@@ -272,7 +272,11 @@ chown -R nginx:nginx /var/cache/nginx
 
 if [ ! -f /etc/app_configured ]; then
     touch /etc/app_configured
-    curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST "https://api.cylo.io/v1/apps/installed/$INSTANCE_ID"
+
+    until [[ $(curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST "https://api.cylo.io/v1/apps/installed/${INSTANCE_ID}" | grep '200') ]]
+        do
+        sleep 5
+    done
 fi
 
 exec /usr/bin/supervisord -n -c /etc/supervisord.conf
