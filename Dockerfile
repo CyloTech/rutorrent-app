@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y git && \
     plowshare \
     plowshare-modules \
     openssl \
-    mktorrent \
+    buildtorrent \
     php-mbstring \
     php-xml && \
     rm /etc/php/7.2/fpm/php.ini
@@ -73,8 +73,8 @@ RUN curl -fSL https://github.com/Novik/ruTorrent/archive/$RUTORRENT_VERSION.tar.
     mkdir -p /sources/html/no-auth && \
     ln -s /sources/html/plugins/fileshare/share.php /sources/html/no-auth/share.php && \
     sed -i /getConfFile/d /sources/html/plugins/fileshare/share.php && \
-    sed -i "s/false/'mktorrent'/g" /sources/html/plugins/create/conf.php && \
-    sed -i "s#''#'/usr/bin/mktorrent'#g" /sources/html/plugins/create/conf.php
+    sed -i "s/false/'buildtorrent'/g" /sources/html/plugins/create/conf.php && \
+    sed -i "s#''#'/usr/bin/buildtorrent'#g" /sources/html/plugins/create/conf.php
 
 RUN cd /sources/html/plugins/ && \
     cd /sources/html/plugins/theme/themes  && \

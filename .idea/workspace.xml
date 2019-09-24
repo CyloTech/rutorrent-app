@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7396f27e-616a-4996-8bd1-bfcb24ca7a8a" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/scripts/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/start.sh" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="816">
+              <caret line="51" column="55" selection-start-line="51" selection-start-column="55" selection-end-line="51" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sources/nginx-site.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="800">
+              <caret line="50" selection-start-line="50" selection-end-line="63" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sources/supervisord.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/start.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1590">
+              <caret line="218" selection-start-line="218" selection-end-line="221" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sources/.rtorrent.rc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1232">
+              <caret line="77" selection-start-line="77" selection-end-line="77" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>dark</find>
+      <find>buffer</find>
+      <find>PORT</find>
+      <find>mobile</find>
+      <find>1000</find>
+      <find>/var/run</find>
+      <find>/run</find>
+      <find>php</find>
+      <find>request_terminate_timeout</find>
+      <find>tz</find>
+      <find>files</find>
+      <find>tzd</find>
+      <find>chown</find>
+      <find>autotool</find>
+      <find>USERNAME</find>
+      <find>autodlautodl</find>
+      <find>RUTORRENT_USER</find>
+      <find>irssi</find>
+      <find>autodl</find>
+      <find>cpu</find>
+      <find>cpuload</find>
+      <find>geoip</find>
+      <find>php-7</find>
+      <find>git</find>
+      <find>/tmp</find>
+      <find>apt insta</find>
+      <find>autodl.cfg</find>
+      <find>/torrents/config/rtorrent</find>
+      <find>cap</find>
+      <find>/torrents/config/rutorrent/users/</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>/var/cache/nginx</replace>
+      <replace>/torrents/config/rutorrent/html</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/sources/supervisord.conf" />
+        <option value="$PROJECT_DIR$/sources/startup-rtorrent.sh" />
+        <option value="$PROJECT_DIR$/sources/libtorrent_cppunit.patch" />
+        <option value="$PROJECT_DIR$/sources/filemanager.conf" />
+        <option value="$PROJECT_DIR$/sources/autotools.dat" />
+        <option value="$PROJECT_DIR$/sources/erasedata.patch.txt" />
+        <option value="$PROJECT_DIR$/sources/label-encoding.patch" />
+        <option value="$PROJECT_DIR$/sources/config.php" />
+        <option value="$PROJECT_DIR$/scripts/entrypoint.sh" />
+        <option value="$PROJECT_DIR$/new/sources/supervisord.conf" />
+        <option value="$PROJECT_DIR$/new/sources/www.conf" />
+        <option value="$PROJECT_DIR$/new/test.js" />
+        <option value="$PROJECT_DIR$/new/sources/filemanager.conf" />
+        <option value="$PROJECT_DIR$/new/sources/nginx.conf" />
+        <option value="$PROJECT_DIR$/patch" />
+        <option value="$PROJECT_DIR$/new/sources/.rtorrent.rc" />
+        <option value="$PROJECT_DIR$/new/sources/docker-vars.ini" />
+        <option value="$PROJECT_DIR$/new/sources/config.php" />
+        <option value="$PROJECT_DIR$/new/Dockerfile" />
+        <option value="$PROJECT_DIR$/new/scripts/start.sh" />
+        <option value="$PROJECT_DIR$/new/sources/nginx-site.conf" />
+        <option value="$PROJECT_DIR$/sources/nginx-site.conf" />
+        <option value="$PROJECT_DIR$/Dockerfile" />
+        <option value="$PROJECT_DIR$/sources/.rtorrent.rc" />
+        <option value="$PROJECT_DIR$/scripts/start.sh" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+    <option name="x" value="1680" />
+    <option name="y" value="-506" />
+    <option name="width" value="1080" />
+    <option name="height" value="1897" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>CSS</id>
+          </State>
+          <State>
+            <id>Code quality toolsCSS</id>
+          </State>
+          <State>
+            <id>Data flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>PHP</id>
+          </State>
+          <State>
+            <id>Probable bugsJavaScript</id>
+          </State>
+          <State>
+            <id>SQL</id>
+          </State>
+          <State>
+            <id>TypeScript</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>AngularJS</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.lastSelected" value="preferences.lookFeel" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/new" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/sources" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7396f27e-616a-4996-8bd1-bfcb24ca7a8a" name="Default" comment="" />
+      <created>1522138215626</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1522138215626</updated>
+      <workItem from="1522138217149" duration="23535000" />
+      <workItem from="1522228302515" duration="6920000" />
+      <workItem from="1522255146379" duration="2045000" />
+      <workItem from="1523029767455" duration="7981000" />
+      <workItem from="1523642435677" duration="175000" />
+      <workItem from="1523643069020" duration="11000" />
+      <workItem from="1523645301076" duration="510000" />
+      <workItem from="1524433326165" duration="1776000" />
+      <workItem from="1524564005258" duration="23219000" />
+      <workItem from="1525278297541" duration="6688000" />
+      <workItem from="1525777840460" duration="10368000" />
+      <workItem from="1526456951754" duration="5000" />
+      <workItem from="1526575155007" duration="167000" />
+      <workItem from="1526905007558" duration="21000" />
+      <workItem from="1527093695192" duration="2170000" />
+      <workItem from="1527351604002" duration="106000" />
+      <workItem from="1527384105475" duration="71000" />
+      <workItem from="1527503953812" duration="180000" />
+      <workItem from="1527603068599" duration="27119000" />
+      <workItem from="1527775392414" duration="7389000" />
+      <workItem from="1527965557457" duration="13086000" />
+      <workItem from="1528375203886" duration="9505000" />
+      <workItem from="1529336382657" duration="2888000" />
+      <workItem from="1530003176450" duration="493000" />
+      <workItem from="1530269832867" duration="96000" />
+      <workItem from="1531242690228" duration="881000" />
+      <workItem from="1532503171014" duration="596000" />
+      <workItem from="1533550504500" duration="512000" />
+      <workItem from="1533802900835" duration="429000" />
+      <workItem from="1535744871800" duration="1370000" />
+      <workItem from="1537194495296" duration="1349000" />
+      <workItem from="1537268732523" duration="829000" />
+      <workItem from="1537792373709" duration="423000" />
+      <workItem from="1537963134578" duration="209000" />
+      <workItem from="1538153116522" duration="246000" />
+      <workItem from="1538647902883" duration="2221000" />
+      <workItem from="1539182274523" duration="523000" />
+      <workItem from="1540479546777" duration="500000" />
+      <workItem from="1541664966538" duration="429000" />
+      <workItem from="1543067190520" duration="658000" />
+      <workItem from="1544803766315" duration="204000" />
+      <workItem from="1547461553737" duration="1626000" />
+      <workItem from="1548418239726" duration="112000" />
+      <workItem from="1549366057609" duration="42000" />
+      <workItem from="1549366219869" duration="93000" />
+      <workItem from="1550140264042" duration="530000" />
+      <workItem from="1554311992234" duration="1725000" />
+      <workItem from="1554711507388" duration="405000" />
+      <workItem from="1554799711485" duration="106000" />
+      <workItem from="1554828576833" duration="560000" />
+      <workItem from="1554883031658" duration="250000" />
+      <workItem from="1555258672513" duration="291000" />
+      <workItem from="1556548280798" duration="401000" />
+      <workItem from="1557590307419" duration="323000" />
+      <workItem from="1557908907814" duration="309000" />
+      <workItem from="1558284387399" duration="489000" />
+      <workItem from="1558736016673" duration="158000" />
+      <workItem from="1558780177123" duration="302000" />
+      <workItem from="1558996826037" duration="59000" />
+      <workItem from="1559030892932" duration="347000" />
+      <workItem from="1559205832999" duration="351000" />
+      <workItem from="1559603736582" duration="76000" />
+      <workItem from="1559841247175" duration="497000" />
+      <workItem from="1561784316980" duration="112000" />
+      <workItem from="1561895615723" duration="133000" />
+      <workItem from="1561896393712" duration="97000" />
+      <workItem from="1563361068065" duration="510000" />
+      <workItem from="1563362614939" duration="138000" />
+      <workItem from="1563362797147" duration="500000" />
+      <workItem from="1563442715950" duration="415000" />
+      <workItem from="1563450560417" duration="424000" />
+      <workItem from="1563806695305" duration="41000" />
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <created>1522226308190</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1522226308191</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Initial commit">
+      <created>1522229655940</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1522229655940</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Use dynamic ports">
+      <created>1522240627108</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1522240627109</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Use dynamic ports">
+      <created>1522251352116</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1522251352116</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Updates">
+      <created>1522260481360</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1522260481360</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix rtorrent crashing">
+      <created>1523037703705</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1523037703705</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix rtorrent crashing">
+      <created>1523439901023</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1523439901023</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix rtorrent SSL">
+      <created>1523642804743</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1523642804743</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Auto fill watch dir for autodl">
+      <created>1523645518509</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1523645518509</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added ffmpeg">
+      <created>1524483120579</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1524483120579</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Various fixes &amp; stability improvements">
+      <created>1525168235241</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1525168235241</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Various fixes &amp; stability improvements">
+      <created>1525171498482</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1525171498482</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Performance updates">
+      <created>1525267896474</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1525267896474</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Allow view all dirs">
+      <created>1525288333346</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1525288333348</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Fixed GeoIP, made /home viewable and added proxy settings to nginx">
+      <created>1525423327969</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1525423327969</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Adjusted settings and timeout">
+      <created>1525699848690</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1525699848690</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Update version">
+      <created>1525854803162</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1525854803162</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Fix updating autotools">
+      <created>1526022614451</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1526022614451</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Only change listening port on update">
+      <created>1526120735884</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1526120735884</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Increase fastcgi timeout">
+      <created>1526296321498</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1526296321498</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Increase fastcgi timeout">
+      <created>1526314832345</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1526314832345</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Rebase to ubuntu">
+      <created>1527847091271</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1527847091271</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Many updates">
+      <created>1528217467440</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1528217467442</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Many updates">
+      <created>1547464139754</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1547464139755</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Update">
+      <created>1549366307792</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1549366307792</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="169325000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1680" y="-529" width="1080" height="1920" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" weight="0.26878613" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3283582" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32935324" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Floobits" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Remote Host" order="3" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32947975" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <MESSAGE value="Use dynamic ports" />
+    <MESSAGE value="Updates" />
+    <MESSAGE value="Fix rtorrent crashing" />
+    <MESSAGE value="Fix rtorrent SSL" />
+    <MESSAGE value="Auto fill watch dir for autodl" />
+    <MESSAGE value="Added ffmpeg" />
+    <MESSAGE value="Various fixes &amp; stability improvements" />
+    <MESSAGE value="Performance updates" />
+    <MESSAGE value="Allow view all dirs" />
+    <MESSAGE value="Fixed GeoIP, made /home viewable and added proxy settings to nginx" />
+    <MESSAGE value="Adjusted settings and timeout" />
+    <MESSAGE value="Update version" />
+    <MESSAGE value="Fix updating autotools" />
+    <MESSAGE value="Only change listening port on update" />
+    <MESSAGE value="Increase fastcgi timeout" />
+    <MESSAGE value="Rebase to ubuntu" />
+    <MESSAGE value="Many updates" />
+    <MESSAGE value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/sources/startup-irssi.sh" />
+    <entry file="file://$PROJECT_DIR$/sources/startup-nginx.sh" />
+    <entry file="file://$PROJECT_DIR$/sources/startup-php.sh" />
+    <entry file="file://$PROJECT_DIR$/sources/extra.list" />
+    <entry file="file://$PROJECT_DIR$/sources/rutorrent-basic.nginx" />
+    <entry file="file://$PROJECT_DIR$/sources/startup-rtorrent.sh" />
+    <entry file="file://$PROJECT_DIR$/sources/libtorrent_cppunit.patch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile.from.source" />
+    <entry file="file://$PROJECT_DIR$/sources/erasedata.patch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/label-encoding.patch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/autotools.dat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="437" selection-start-column="437" selection-end-column="437" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/new/test.js" />
+    <entry file="file://$PROJECT_DIR$/patch" />
+    <entry file="file://$PROJECT_DIR$/sources/filemanager.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/entrypoint.sh" />
+    <entry file="file://$PROJECT_DIR$/sources/www.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5328">
+          <caret line="333" column="1" lean-forward="true" selection-start-line="333" selection-start-column="1" selection-end-line="333" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/nginx.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="11" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/docker-vars.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="24" lean-forward="true" selection-end-line="8" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/config.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="592">
+          <caret line="37" column="25" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="51" column="55" selection-start-line="51" selection-start-column="55" selection-end-line="51" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/nginx-site.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="50" selection-start-line="50" selection-end-line="63" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/supervisord.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/.rtorrent.rc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1232">
+          <caret line="77" selection-start-line="77" selection-end-line="77" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/start.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1590">
+          <caret line="218" selection-start-line="218" selection-end-line="221" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
