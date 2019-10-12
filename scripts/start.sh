@@ -196,6 +196,16 @@ if [[ -d /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/tasks ]]
     rm -rf /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/tasks
 fi
 
+####################[ FIX AUTODL-IRSSI SSL ISSUE ]#######################
+if [[ -f /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm ]]
+then
+    echo "Patching AutoDL SSL ISSUE."
+    rm -f /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
+    mv /SslSocket.pm /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
+    chmod 750 /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
+fi
+
+
 ###########################[ NGINX SETUP ]###############################
 
 if [[ ! -f /torrents/config/rutorrent/html/.htpasswd ]]; then

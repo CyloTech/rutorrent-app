@@ -123,6 +123,7 @@ ADD sources/nginx.conf /etc/nginx/nginx.conf
 ADD scripts/start.sh /scripts/start.sh
 ADD sources/ffmpeg /usr/bin/ffmpeg
 ADD sources/ffprobe /usr/bin/ffprobe
+ADD sources/SslSocket.pm /SslSocket.pm
 
 RUN chmod -R +x /scripts
 
