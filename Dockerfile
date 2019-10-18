@@ -45,7 +45,7 @@ RUN apt remove -y php-pear php-dev
 
 RUN apt-get install -y lsb-release build-essential pkg-config \
     subversion git time lsof binutils tmux curl wget \
-    python-setuptools python-virtualenv python-dev \
+    python-setuptools python-virtualenv python-dev python-pip \
     libssl-dev zlib1g-dev libncurses-dev libncursesw5-dev \
     libcppunit-dev autoconf automake libtool \
     libffi-dev libxml2-dev libxslt1-dev
@@ -87,6 +87,8 @@ RUN cd /sources/html/plugins/ && \
     rm -rf club-QuickBox && \
     git clone https://github.com/QuickBox/club-QuickBox.git club-QuickBox
 
+RUN pip install cloudscraper
+
 RUN	mkdir -p /var/cache/nginx/.irssi/scripts/autorun && \
     cd /var/cache/nginx/.irssi/scripts && \
 	curl -sL http://git.io/vlcND | grep -Po '(?<="browser_download_url": ")(.*-v[\d.]+.zip)' | xargs wget --quiet -O autodl-irssi.zip && \
@@ -123,9 +125,14 @@ ADD sources/nginx.conf /etc/nginx/nginx.conf
 ADD scripts/start.sh /scripts/start.sh
 ADD sources/ffmpeg /usr/bin/ffmpeg
 ADD sources/ffprobe /usr/bin/ffprobe
-ADD sources/SslSocket.pm /SslSocket.pm
 
 RUN chmod -R +x /scripts
+
+
+RUN groupmod -g 9999 nogroup
+RUN usermod -g 9999 nobody
+RUN usermod -u 9999 nobody
+RUN usermod -g 9999 sync
 
 RUN apt-get remove -y lsb-release build-essential pkg-config \
     subversion time lsof binutils \
