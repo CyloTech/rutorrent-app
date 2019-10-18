@@ -8,6 +8,18 @@ if [[ ! -d /torrents/config/rutorrent/html ]]; then
     cp -avr /sources/html/* /torrents/config/rutorrent/html/
 fi
 
+if ! grep -q '3.9-2' /torrents/config/rtorrent/.rtorrent.rc; then
+    sed -i '1d' /torrents/config/rtorrent/.rtorrent.rc
+    sed -i '1i# Appbox ruTorrent 3.9-2 config' /torrents/config/rtorrent/.rtorrent.rc
+
+    # Copy new rutorrent version over
+    cp -avr /sources/html/* /torrents/config/rutorrent/html/
+    sed -i 's#http://mydomain.com#'${EXTERNAL_DOMAIN}'/no-auth#g' /torrents/config/rutorrent/html/plugins/fileshare/conf.php
+    sed -i 's#300#30#g' /torrents/config/rutorrent/html/plugins/autotools/conf.php
+    sed -i 's/$defaultTheme = ""/$defaultTheme = "club-QuickBox"/g' /torrents/config/rutorrent/html/plugins/theme/conf.php
+    rm -rf /torrents/config/rutorrent/html/index.php
+fi
+
 ###########################[ SUPERVISOR SCRIPTS ]###############################
 cat << EOF > /etc/supervisor/conf.d/rtorrent.conf
 [program:rtorrent]
@@ -75,20 +87,9 @@ EOF
 
 ###########################[ IRSSI SETUP ]###############################
 # Set up .autodl dir, and allow for configs to be saved.
-if [[ ! -d /torrents/config/autodl-irssi/autodl ]]
-then
-    echo "Did not find /torrents/config/autodl-irssi/autodl existed. Creating it."
-    mkdir -p /torrents/config/autodl-irssi/autodl
-fi
-
-if [[ ! -d /torrents/config/autodl-irssi/irssi ]]
-then
-    echo "Did not find /torrents/config/autodl-irssi/irssi existed. Creating it."
-    mv /var/cache/nginx/.irssi /torrents/config/autodl-irssi/irssi
-fi
-
 if [[ ! -h /var/cache/nginx/.autodl ]]
 then
+    mkdir -p /torrents/config/autodl-irssi/autodl
 	echo "Linking autodl config directory to /torrents/config/autodl-irssi/autodl"
 	ln -s /torrents/config/autodl-irssi/autodl /var/cache/nginx/.autodl
 else
@@ -97,6 +98,13 @@ fi
 
 if [[ ! -h /var/cache/nginx/.irssi ]]
 then
+    if [[ -d /torrents/config/autodl-irssi/irssi ]]
+    then
+        echo "Removing old user irssi folder (it's not linked)"
+        rm -rf /torrents/config/autodl-irssi/irssi
+    fi
+    echo "Moving irssi to user folder"
+    mv /var/cache/nginx/.irssi /torrents/config/autodl-irssi/irssi
 	echo "Linking autodl config directory to /torrents/config/autodl-irssi/irssi"
 	ln -s /torrents/config/autodl-irssi/irssi /var/cache/nginx/.irssi
 else
@@ -196,20 +204,10 @@ if [[ -d /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/tasks ]]
     rm -rf /torrents/config/rutorrent/users/${RUTORRENT_USER}/settings/tasks
 fi
 
-####################[ FIX AUTODL-IRSSI SSL ISSUE ]#######################
-if [[ -f /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm ]]
-then
-    echo "Patching AutoDL SSL ISSUE."
-    rm -f /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
-    mv /SslSocket.pm /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
-    chmod 750 /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
-fi
-
-
 ###########################[ NGINX SETUP ]###############################
 
 if [[ ! -f /torrents/config/rutorrent/html/.htpasswd ]]; then
-    printf "${RUTORRENT_USER}:$(openssl passwd -crypt ${RUTORRENT_PASSWORD})\n" >> //torrents/config/rutorrent/html/.htpasswd && chmod 755 /torrents/config/rutorrent/html/.htpasswd
+    printf "${RUTORRENT_USER}:$(openssl passwd -crypt ${RUTORRENT_PASSWORD})\n" >> /torrents/config/rutorrent/html/.htpasswd && chmod 755 /torrents/config/rutorrent/html/.htpasswd
     rm -rf /torrents/config/rutorrent/html/index.php
 fi
 
@@ -221,14 +219,17 @@ sed -i 's/true/false/g' /torrents/config/rutorrent/html/plugins/_getdir/conf.php
 ls -d /torrents/* | grep -v home | xargs -d "\n" chown -R nginx:nginx
 chown -R nginx:nginx /var/cache/nginx
 
+##### TEMP FIX FOR https://github.com/autodl-community/autodl-irssi/issues/168 ######
+sed -i 's/Net::SSLeay::read(/Net::SSLeay::ssl_read_all(/g' /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
+
 ###########################[ MARK INSTALLED ]###############################
 
 if [[ ! -f /etc/app_configured ]]; then
     touch /etc/app_configured
 
     # Ensure we're using buildtorrent, this can be taken out once everyone is using this version as it's in the Dockerfile
-    sed -i "s#/usr/bin/mktorrent#/usr/bin/buildtorrent#g" /sources/html/plugins/create/conf.php
-    sed -i "s/mktorrent/buildtorrent/g" /sources/html/plugins/create/conf.php
+    sed -i "s#/usr/bin/mktorrent#/usr/bin/buildtorrent#g" /torrents/config/rutorrent/html/plugins/create/conf.php
+    sed -i "s/mktorrent/buildtorrent/g" /torrents/config/rutorrent/html/plugins/create/conf.php
 
     until [[ $(curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST "https://api.cylo.io/v1/apps/installed/${INSTANCE_ID}" | grep '200') ]]
         do
