@@ -57,6 +57,9 @@ nice ./build.sh all && \
 cd && \
 rm -rf rtorrent-ps" nginx
 
+# Fix https://github.com/autodl-community/autodl-irssi/pull/186
+RUN cpan Net::SSLeay
+
 RUN mkdir -p /sources/html/ && mkdir -p /run/php
 
 RUN curl -fSL https://github.com/Novik/ruTorrent/archive/$RUTORRENT_VERSION.tar.gz -o rutorrent.tar.gz && \

@@ -219,9 +219,6 @@ sed -i 's/true/false/g' /torrents/config/rutorrent/html/plugins/_getdir/conf.php
 ls -d /torrents/* | grep -v home | xargs -d "\n" chown -R nginx:nginx
 chown -R nginx:nginx /var/cache/nginx
 
-##### TEMP FIX FOR https://github.com/autodl-community/autodl-irssi/issues/168 ######
-sed -i 's/Net::SSLeay::read(/Net::SSLeay::ssl_read_all(/g' /torrents/config/autodl-irssi/irssi/scripts/AutodlIrssi/SslSocket.pm
-
 ###########################[ MARK INSTALLED ]###############################
 
 if [[ ! -f /etc/app_configured ]]; then
