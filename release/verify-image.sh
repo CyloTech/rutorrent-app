@@ -1,11 +1,13 @@
 #!/bin/sh
 # Release gate for the ruTorrent 3.10 image with the rebuilt php7.2.
 #
-# Usage: release/verify-image.sh <registry>/<repository>:<tag>
+# Usage: release/verify-image.sh <image> [<registry>/<repository>:<tag>]
 #
-# Exits 0 only when the local image passes every check and the registry
-# definitively reports that the tag does not exist yet. Any indeterminate
-# registry answer fails.
+# Runs every check against the local <image>, which may be a local-only tag
+# such as local/rutorrent-3.10-11-candidate:<commit>. Exits 0 only when the
+# image passes every check and the registry definitively reports that the
+# release tag (the second argument, or <image> when it is omitted) does not
+# exist yet. Any indeterminate registry answer fails.
 set -eu
 
 fail() {
@@ -13,11 +15,14 @@ fail() {
     exit 1
 }
 
-[ "$#" -eq 1 ] || fail "usage: $0 <registry>/<repository>:<tag>"
+[ "$#" -eq 1 ] || [ "$#" -eq 2 ] || fail "usage: $0 <image> [<registry>/<repository>:<tag>]"
 image_ref=$1
-case "$image_ref" in
-    ''|*[!A-Za-z0-9._/:-]*|*@*) fail "invalid image reference: $image_ref" ;;
-esac
+release_ref=${2:-$1}
+for ref in "$image_ref" "$release_ref"; do
+    case "$ref" in
+        ''|*[!A-Za-z0-9._/:-]*|*@*) fail "invalid image reference: $ref" ;;
+    esac
+done
 release_dir=$(cd "$(dirname "$0")" && pwd)
 
 echo "== PHP packages"
@@ -60,8 +65,8 @@ for check in "$release_dir"/regression/*.sh; do
 done
 
 echo "== Registry tag must not exist"
-registry=${image_ref%%/*}
-repository_and_tag=${image_ref#*/}
+registry=${release_ref%%/*}
+repository_and_tag=${release_ref#*/}
 repository=${repository_and_tag%:*}
 tag=${repository_and_tag##*:}
 [ "$repository" != "$repository_and_tag" ] || fail "image reference has no tag"
@@ -84,13 +89,13 @@ api_status=$(registry_get /v2/) || fail "registry unreachable"
 
 manifest_status=$(registry_get "/v2/$repository/manifests/$tag") || fail "registry unreachable"
 case "$manifest_status" in
-    200) fail "$image_ref already exists in the registry" ;;
+    200) fail "$release_ref already exists in the registry" ;;
     404)
         grep -q 'MANIFEST_UNKNOWN' "$registry_body" \
             || fail "registry returned 404 without MANIFEST_UNKNOWN: $(head -c 300 "$registry_body")"
-        echo "$image_ref is not in the registry yet"
+        echo "$release_ref is not in the registry yet"
         ;;
-    *) fail "registry returned HTTP $manifest_status for $image_ref" ;;
+    *) fail "registry returned HTTP $manifest_status for $release_ref" ;;
 esac
 
-echo "PASS: $image_ref"
+echo "PASS: $image_ref (release tag $release_ref)"
