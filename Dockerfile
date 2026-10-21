@@ -1,9 +1,11 @@
 # ruTorrent 3.10 on Ubuntu 18.04 with a locally rebuilt php7.2.
 #
 # Stage 1 rebuilds Ubuntu's php7.2 source package with the patches in
-# php72-patches/. Stage 2 is the deployed 3.10 image with only its php7.2
+# php72-patches/. Stage 2 is the deployed 3.10 image with its php7.2
 # packages replaced, so the PHP ABI, extensions (including the PECL geoip
-# module), configuration and the ruTorrent code stay as they were.
+# module), configuration and the ruTorrent code stay as they were. Stage 2
+# also installs sources/nginx-site.conf, the deployed nginx site with the
+# login required for PHP scripts.
 
 ARG PHP72_SOURCE_VERSION=7.2.24-0ubuntu0.18.04.17
 ARG PHP72_LOCAL_SUFFIX=+cylo2
@@ -63,6 +65,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends /tmp/php72/*.deb \
     && rm -rf /tmp/php72 /var/lib/apt/lists/* \
     && php-fpm7.2 -t
+
+# The deployed nginx site, with the login also required for PHP scripts.
+COPY --chmod=0644 sources/nginx-site.conf /etc/nginx/sites-available/default
+RUN nginx -t
 
 ADD scripts /scripts
 

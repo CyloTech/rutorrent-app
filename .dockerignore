@@ -4,3 +4,4 @@
 sources
 release
 !release/php72-build-packages.txt
+!sources/nginx-site.conf
