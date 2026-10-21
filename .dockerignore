@@ -3,3 +3,4 @@
 .vscode
 sources
 release
+!release/php72-build-packages.txt

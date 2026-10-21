@@ -6,7 +6,17 @@ order, so prefix them with a number (`0001-...`). Patches must apply to the
 
 Bump `PHP72_LOCAL_SUFFIX` in the Dockerfile (`+cylo1`, `+cylo2`, ...) whenever
 the set of patches changes, and add a regression check under
-`release/regression/` for the issue each patch fixes.
+`release/regression/` for the issue each patch fixes. `+cylo1` was the
+rebuild without patches (9f3b937); `+cylo2` adds `0001`.
+
+The build is checked against two recorded package lists, so update them with
+the suffix:
+
+- `release/php72-build-packages.txt`: the packages in the build stage after
+  `apt-get build-dep`. The build stops if apt installs anything else.
+- `release/expected-packages.txt`: every package in the final image. The
+  release gate compares it, and requires `expected_php72_version` in
+  `release/verify-image.sh` for php-fpm7.2 and every php7.2 package.
 
 ## Patches
 

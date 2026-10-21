@@ -6,7 +6,7 @@
 # module), configuration and the ruTorrent code stay as they were.
 
 ARG PHP72_SOURCE_VERSION=7.2.24-0ubuntu0.18.04.17
-ARG PHP72_LOCAL_SUFFIX=+cylo1
+ARG PHP72_LOCAL_SUFFIX=+cylo2
 
 FROM ubuntu:18.04@sha256:152dc042452c496007f07ca9127571cb9c29697f42acbfad72324b2bb2e43c98 AS php72-build
 ARG PHP72_SOURCE_VERSION
@@ -17,6 +17,14 @@ RUN sed -i 's/^# deb-src/deb-src/' /etc/apt/sources.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends build-essential devscripts dpkg-dev fakeroot quilt \
     && apt-get build-dep -y "php7.2=${PHP72_SOURCE_VERSION}"
+
+# apt resolves the tools and build dependencies above without version pins.
+# release/php72-build-packages.txt records the packages this release was
+# built with; stop if apt installed anything else.
+COPY release/php72-build-packages.txt /build/
+RUN dpkg-query -W -f='${Status}|${Package} ${Version} ${Architecture}\n' \
+        | sed -n 's/^install ok installed|//p' | LC_ALL=C sort \
+        | diff -u /build/php72-build-packages.txt -
 
 WORKDIR /build
 RUN apt-get source --only-source "php7.2=${PHP72_SOURCE_VERSION}"

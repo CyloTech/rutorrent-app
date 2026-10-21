@@ -26,20 +26,31 @@ done
 release_dir=$(cd "$(dirname "$0")" && pwd)
 
 echo "== PHP packages"
+# The php7.2 build this release ships. Change it together with
+# PHP72_SOURCE_VERSION/PHP72_LOCAL_SUFFIX in the Dockerfile and
+# release/expected-packages.txt.
+expected_php72_version=7.2.24-0ubuntu0.18.04.17+cylo2
 fpm_version=$(docker run --rm --network none --entrypoint php-fpm7.2 "$image_ref" -v | head -1)
 echo "$fpm_version"
 case "$fpm_version" in
-    *+cylo*) ;;
-    *) fail "php-fpm7.2 is not the locally rebuilt package" ;;
+    "PHP $expected_php72_version (fpm-fcgi) "*) ;;
+    *) fail "php-fpm7.2 is not $expected_php72_version" ;;
 esac
-packages=$(docker run --rm --network none --entrypoint dpkg-query "$image_ref" \
-    -W -f='${Status}|${Package} ${Version}\n' 'php7.2-*' \
-    | sed -n 's/^install ok installed|//p')
+installed=$(docker run --rm --network none --entrypoint dpkg-query "$image_ref" \
+    -W -f='${Status}|${Package} ${Version} ${Architecture}\n' \
+    | sed -n 's/^install ok installed|//p' | LC_ALL=C sort)
+packages=$(echo "$installed" | grep '^php7\.2-' || true)
 echo "$packages"
 [ -n "$packages" ] || fail "no php7.2 packages installed"
-if echo "$packages" | grep -v '+cylo' | grep -q .; then
-    fail "some php7.2 packages are not from the local rebuild"
+if echo "$packages" | grep -v "^php7\\.2-[^ ]* $expected_php72_version " | grep -q .; then
+    fail "some php7.2 packages are not $expected_php72_version"
 fi
+# Stage 2 installs the rebuilt packages with apt, which could also upgrade
+# or add other packages. release/expected-packages.txt is the complete list
+# this release was built with: the deployed 3.10 image's packages with only
+# the php7.2 versions changed.
+echo "$installed" | diff -u "$release_dir/expected-packages.txt" - \
+    || fail "installed packages differ from release/expected-packages.txt"
 
 echo "== FPM modules"
 docker run --rm --network none --entrypoint php-fpm7.2 "$image_ref" -m \
